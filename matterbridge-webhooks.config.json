@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "whiteList": [],
   "blackList": [],
+  "timeout": 5000,
   "webhooks": {
     "Example Light": {
       "deviceType": "Light",
@@ -94,6 +95,22 @@
           }
         }
       ]
+    },
+    "Example Slow Device": {
+      "deviceType": "DimmableLight",
+      "timeout": 15000,
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.105/light?power=on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.105/light?power=off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.105/light?brightness=${brightness}"
+      }
     }
   },
   "debug": false,

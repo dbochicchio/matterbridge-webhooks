@@ -624,6 +624,38 @@ Execute multiple HTTP requests sequentially for a single action:
 8. **Parameters** in GET become query strings, in POST/PUT become JSON body
 9. **Advanced brightness support** - Use `${intensity.*}` patterns for specialized brightness handling (see [ha-bridge Intensity Reference](HA_BRIDGE_INTENSITY_REFERENCE.md))
 10. **Color support** - Use `${color.*}` patterns for RGB/HSB color handling (see [ha-bridge Color Reference](HA_BRIDGE_COLOR_REFERENCE.md))
+11. **Timeouts** - Set per device or globally (default 5 seconds) for slow APIs
+
+## Configuring Request Timeout
+
+If your device is slow to respond, increase the timeout:
+
+```json
+{
+  "Slow Device": {
+    "deviceType": "Light",
+    "timeout": 10000,
+    "on": {
+      "method": "GET",
+      "url": "http://192.168.1.100/light?turn=on"
+    },
+    "off": {
+      "method": "GET",
+      "url": "http://192.168.1.100/light?turn=off"
+    }
+  }
+}
+```
+
+Set global timeout for all devices (add to plugin config):
+
+```json
+{
+  "name": "matterbridge-webhooks",
+  "timeout": 10000,
+  "webhooks": { ... }
+}
+```
 
 ## Testing Commands
 

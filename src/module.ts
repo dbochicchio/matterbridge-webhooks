@@ -1232,12 +1232,15 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
     brightness?: number,
   ): Promise<void> {
     try {
+      // Get webhook config for this device to access timeout setting
+      const webhook = this.webhooks[deviceName];
+
       // Handle both single endpoint and array of endpoints
       const commands: HttpCommand[] = Array.isArray(endpoint) ? endpoint : [endpoint];
 
       // Execute commands sequentially
       for (const command of commands) {
-        await this.executeCommand(deviceName, command, params, level, hue, saturation, brightness);
+        await this.executeCommand(deviceName, webhook, command, params, level, hue, saturation, brightness);
       }
     } catch (err) {
       this.log.error(`${deviceName}: HTTP request failed: ${err instanceof Error ? err.message : err}`);
@@ -1246,6 +1249,7 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
 
   private async executeCommand(
     deviceName: string,
+    webhook: WebhookConfig,
     command: HttpCommand,
     params: Record<string, string | number | boolean>,
     level?: number,
