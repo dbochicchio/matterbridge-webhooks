@@ -646,8 +646,42 @@ You can test your endpoints directly from the Matterbridge configuration UI:
 2. **Test each endpoint** - Use the test feature before deploying
 3. **Check logs** - Enable debug mode for detailed HTTP request/response logs
 4. **URL encoding** - Special characters in URLs should be properly encoded
-5. **Timeouts** - HTTP requests timeout after 5 seconds by default
+5. **Request timeouts** - Configure HTTP timeout (default 5000ms) globally or per device
 6. **Scenes for automation** - Use Scene device type for triggers that shouldn't maintain state
+
+## Configuring Request Timeouts
+
+By default, HTTP requests have a **5-second timeout** (5000 milliseconds). If your devices respond slowly, you can increase this:
+
+**Set a global timeout for all devices:**
+Add this to the plugin configuration:
+
+```json
+{
+  "name": "matterbridge-webhooks",
+  "type": "webhooks",
+  "timeout": 10000
+}
+```
+
+**Override timeout for a specific device:**
+Add this to the device configuration:
+
+```json
+{
+  "MySlowDevice": {
+    "deviceType": "Light",
+    "timeout": 15000,
+    "on": { ... }
+  }
+}
+```
+
+**Timeout values:**
+
+- Minimum: 100ms (for very fast local APIs)
+- Maximum: 60000ms (60 seconds)
+- Default: 5000ms (5 seconds)
 
 ## Support
 

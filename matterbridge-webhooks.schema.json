@@ -46,6 +46,13 @@
       "enum": ["Outlet", "Switch", "Light"],
       "description": "(Deprecated - use per-device deviceType) Select how to rappresent the webhooks on the controller. Don't use Switch for Alexa."
     },
+    "timeout": {
+      "type": "number",
+      "default": 5000,
+      "minimum": 100,
+      "maximum": 60000,
+      "description": "Default HTTP request timeout in milliseconds. Can be overridden per device (100-60000ms, default: 5000ms)"
+    },
     "webhooks": {
       "description": "Define each device. Enter in the first field the name of the device (replace newKey with the device name) and in the right panel configure the device type and HTTP endpoints.",
       "type": "object",
@@ -240,6 +247,12 @@
             "default": false,
             "buttonText": "Test ON",
             "description": "Test the ON endpoint by sending a request"
+          },
+          "timeout": {
+            "type": "number",
+            "minimum": 100,
+            "maximum": 60000,
+            "description": "HTTP request timeout for this device in milliseconds. Overrides the platform default (100-60000ms)"
           },
           "method": {
             "type": "string",

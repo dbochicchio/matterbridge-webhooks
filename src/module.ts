@@ -140,6 +140,9 @@ export interface WebhookConfig {
   pollInterval?: number; // Poll interval in seconds (default: 60)
   pollTemplate?: string; // Template for extracting value from JSON response (e.g., 'sensors.temperature' or 'data.value')
 
+  // HTTP timeout configuration
+  timeout?: number; // Request timeout in milliseconds (default: 5000)
+
   // Mode select configuration
   modes?: Array<{ label: string; mode: number }>; // For mode select devices
 
@@ -154,6 +157,7 @@ export type WebhooksPlatformConfig = PlatformConfig & {
   whiteList: string[];
   blackList: string[];
   deviceType?: 'Outlet' | 'Switch' | 'Light'; // Deprecated - now per-device
+  timeout?: number; // Default request timeout in milliseconds (default: 5000)
   webhooks: Record<string, WebhookConfig>;
 };
 
@@ -172,6 +176,7 @@ export default function initializePlugin(matterbridge: PlatformMatterbridge, log
 
 export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
   private webhooks: Record<string, WebhookConfig>;
+  private defaultTimeout: number; // Default request timeout in milliseconds
   readonly bridgedDevices = new Map<string, MatterbridgeEndpoint>();
   private deviceLevel = new Map<string, number>(); // Store current level (0-254) for ha-bridge replacements
 
@@ -186,6 +191,7 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
     this.log.info('Initializing platform:', this.config.name);
 
     this.webhooks = config.webhooks;
+    this.defaultTimeout = config.timeout ?? 5000; // Default to 5 seconds
 
     this.log.info('Finished initializing platform:', this.config.name);
   }
@@ -1303,7 +1309,9 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       this.deviceLevel.set(deviceName, level);
     }
 
-    await fetch(url, command.method, urlParams);
+    // Use device-specific timeout if configured, otherwise use platform default
+    const deviceTimeout = webhook.timeout ?? this.defaultTimeout;
+    await fetch(url, command.method, urlParams, deviceTimeout);
     this.log.notice(`${deviceName}: HTTP request successful`);
   }
 
