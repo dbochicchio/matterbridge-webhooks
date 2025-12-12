@@ -15,14 +15,89 @@
 
 ---
 
-This plugin allows you to expose any webhooks to Matter.
+This plugin allows you to expose HTTP-controlled devices to Matter by mapping them to virtual devices with configurable HTTP endpoints. Supports 25+ device types including lights, sensors, thermostats, covers, locks, and more.
 
-Features:
+## Features
 
-- The webhooks parameters can easily be entered in the frontend.
-- It is possible to choose how to expose the webhooks: Switch, Outlet or Light.
-- It is possible to choose the method: GET or POST.
-- The webhook can be tested in the frontend.
+- **25+ Device Types** - Comprehensive support for switches, lights, sensors, thermostats, covers, locks, mode select, and mounted switches
+- **Advanced Light Control** - Full RGB/RGBW support with XY, HS color spaces and color temperature
+- **Sensor Polling** - Automatic polling for contact, motion, temperature, humidity, pressure, and illuminance sensors with flexible JSON path extraction
+- **Poll Templates** - MQTT Controller-style JSON path extraction for complex API responses (e.g., `sensors.temperature` or `data.values[0].temp`)
+- **Per-device Configuration** - Each device can have its own type and endpoints
+- **Flexible HTTP Endpoints** - Separate endpoints for different actions (on/off, brightness, color, position, etc.)
+- **Multiple HTTP Methods** - GET, POST, and PUT support
+- **Dynamic Parameters** - URL placeholder substitution (e.g., `${brightness}`, `${hue}`, `${temperature}`)
+- **ha-bridge Intensity Replacements** - Advanced brightness patterns (`${intensity.percent}`, `${intensity.byte}`, `${intensity.math()}`, etc.)
+- **ha-bridge Color Replacements** - Advanced color patterns (`${color.r}`, `${color.g}`, `${color.b}`, `${color.rgbx}`, `${color.hsb}`, etc.) with HSV-to-RGB conversion
+- **Time Tracking** - Include timestamps in requests (`${time.millis}`)
+- **Brightness Alias** - Convenient `${brightness}` placeholder for quick access
+- **Multiple Commands Per Endpoint** - Execute sequential commands for complex device control
+- **Custom Parameters** - Add custom key-value parameters to requests
+- **Easy Configuration** - Configure everything through the Matterbridge frontend
+- **Test Functionality** - Test endpoints directly from the config editor
+- **Backward Compatible** - Old configuration format still works
+
+## Supported Device Types
+
+### Switches & Outlets
+
+- **Outlet** - Smart plugs/outlets
+- **Switch** - Generic on/off switches
+- **Scene** - Momentary triggers
+
+### Lights
+
+- **Light** - Simple on/off lights
+- **DimmableLight** - Lights with brightness (0-100%)
+- **ColorTemperatureLight** - Dimmable + warm/cool white
+- **ExtendedColorLight** - Full RGBW with XY, HS, and CT
+- **ColorLightHS** - RGBW with Hue/Saturation
+- **ColorLightXY** - RGBW with XY color space
+
+### Sensors
+
+- **ContactSensor** - Door/window contact sensors
+- **MotionSensor** - PIR motion sensors
+- **IlluminanceSensor** - Light level sensors (lux)
+- **TemperatureSensor** - Temperature sensors (°C)
+- **HumiditySensor** - Humidity sensors (%)
+- **PressureSensor** - Pressure sensors (hPa)
+- **ClimateSensor** - Combined temp/humidity/pressure
+
+### Covers
+
+- **CoverLift** - Window coverings with lift
+- **CoverLiftTilt** - Window coverings with lift and tilt
+
+### Locks
+
+- **DoorLock** - Smart door locks
+
+### Thermostats
+
+- **ThermostatAuto** - Auto mode (heat + cool)
+- **ThermostatHeat** - Heating only
+- **ThermostatCool** - Cooling only (AC)
+
+### Mode Select
+
+- **ModeSelect** - Devices with multiple modes (fan speeds, etc.)
+
+### Mounted Switches
+
+- **OnOffMountedSwitch** - Wall-mounted on/off switches
+- **DimmerMountedSwitch** - Wall-mounted dimmer switches
+
+## Quick Start
+
+📑 **[Documentation Index](docs/index.md)** - Complete documentation map
+📖 **[Configuration Guide](docs/CONFIGURATION_GUIDE.md)** - Comprehensive setup guide with examples  
+📘 **[Device Types Reference](docs/DEVICE_TYPES.md)** - Complete guide to all 25+ device types  
+⚡ **[Quick Reference](docs/QUICK_REFERENCE.md)** - Common device configurations  
+🔄 **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Changes and upgrade information  
+🌉 **[ha-bridge Intensity Reference](docs/HA_BRIDGE_INTENSITY_REFERENCE.md)** - Advanced ha-bridge intensity replacement patterns  
+🎨 **[ha-bridge Color Reference](docs/HA_BRIDGE_COLOR_REFERENCE.md)** - Advanced ha-bridge color replacement patterns  
+📊 **[Poll Templates Guide](docs/POLL_TEMPLATES.md)** - JSON path extraction for sensor polling
 
 If you like this project and find it useful, please consider giving it a star on GitHub at https://github.com/Luligu/matterbridge-webhooks and sponsoring it.
 
@@ -48,34 +123,205 @@ sudo npm install -g matterbridge --omit=dev
 
 See the complete guidelines on [Matterbridge](https://github.com/Luligu/matterbridge/blob/main/README.md) for more information.
 
-## How to add a webhook
+## How to Configure a Device
 
-In the frontend open the plugin config: add a new webhook, enter the webhook name in the first field (replace newKey with the name you want to give to the webhook), select GET or POST and enter the webhook url. The webhook name will be the device name on the controller. The webhook will be exposed like a switch, like an outlet or like a light. When you turn it on, the webhook is called and in a few seconds the switch or the outlet or the light will revert to off.
+1. Open the plugin configuration in the Matterbridge frontend
+2. Add a new device in the `webhooks` section
+3. Set a device name (this will appear in your Matter controller)
+4. Select the `deviceType` (Outlet, Switch, Light, DimmableLight, Scene)
+5. Configure HTTP endpoints:
+   - **on** - Called when turning ON (required)
+   - **off** - Called when turning OFF (optional for scenes)
+   - **brightness** - Called when adjusting brightness (DimmableLight only)
+6. For each endpoint, specify:
+   - `method` - HTTP method (GET, POST, PUT)
+   - `url` - Endpoint URL (can include `{placeholders}`)
+   - `params` - Additional parameters (optional)
+7. Test the endpoint using the Test button
+8. Save and restart Matterbridge
 
-It is possible to test directly the webhook from the config editor.
+See **[Quick Reference](QUICK_REFERENCE.md)** for ready-to-use examples!
 
-## Examples
+## Configuration Examples
 
-## Shelly webhooks examples
+### Simple Light (Shelly Gen 1)
 
-Change 192.168.1.XXX with your device IP address.
+```json
+{
+  "webhooks": {
+    "Living Room Light": {
+      "deviceType": "Light",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.100/light/0?turn=on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.100/light/0?turn=off"
+      }
+    }
+  }
+}
+```
 
-### Shelly 1 Gen 1
+### Dimmable Light
 
-To turn on a shelly gen 1 device with ip 192.168.1.155 the url is http://192.168.1.XXX/light/0?turn=on.
+```json
+{
+  "webhooks": {
+    "Bedroom Light": {
+      "deviceType": "DimmableLight",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.101/api/light",
+        "params": { "state": "on" }
+      },
+      "off": {
+        "method": "POST",
+        "url": "http://192.168.1.101/api/light",
+        "params": { "state": "off" }
+      },
+      "brightness": {
+        "method": "PUT",
+        "url": "http://192.168.1.101/api/light",
+        "params": { "brightness": 0 }
+      }
+    }
+  }
+}
+```
 
-To turn off a shelly gen 1 device with ip 192.168.1.155 the url is http://192.168.1.XXX/light/0?turn=off.
+### Scene/Automation Trigger
+
+```json
+{
+  "webhooks": {
+    "Good Night": {
+      "deviceType": "Scene",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.102/api/scene/goodnight",
+        "params": { "trigger": true }
+      }
+    }
+  }
+}
+```
+
+## More Examples
+
+For more examples including:
+
+- Home Assistant integration
+- Node-RED webhooks
+- Tasmota devices
+- Custom REST APIs
+- Authentication with tokens
+
+See **[Quick Reference](QUICK_REFERENCE.md)** for complete examples.
+
+## Device Types
+
+- **Outlet** - Smart plugs/outlets (on/off)
+- **Switch** - Generic switches (on/off)
+- **Light** - Simple lights (on/off)
+- **DimmableLight** - Lights with brightness control (0-100%)
+- **Scene** - Momentary triggers (automatically turns off)
+
+## HTTP Methods
+
+- **GET** - Parameters as URL query strings
+- **POST** - Parameters in JSON request body
+- **PUT** - Parameters in JSON request body
+
+## Parameter Substitution
+
+Use placeholders in URLs that get replaced with actual values:
+
+- `${brightness}` - Brightness percentage (0-100)
+- `${level}` - Matter brightness level (0-254)
+
+Example:
+
+```
+"url": "http://device/api?brightness=${brightness}"
+```
+
+When brightness is 75%, becomes:
+
+```
+http://device/api?brightness=75
+```
+
+## Testing
+
+You can test endpoints directly from the configuration UI:
+
+1. Set `test: true` in your device configuration
+2. Click the "Test ON" button
+3. Check Matterbridge logs for results
+
+## Backward Compatibility
+
+Old configuration format is still supported:
+
+```json
+{
+  "deviceType": "Outlet",
+  "webhooks": {
+    "My Device": {
+      "method": "GET",
+      "httpUrl": "http://192.168.1.100/toggle"
+    }
+  }
+}
+```
+
+This automatically converts to the new format.
+
+## Additional Examples from Original README
 
 ### Shelly Trv Gen 1
 
-The following examples allows to fully control a Shelly Trv Gen 1, adding Boost, Schedule and Profile (provided by https://github.com/vandan380).
+Control a Shelly Trv Gen 1 with boost, schedule, and profiles:
 
-"Boost 30min": method: POST, Url: "http://192.168.1.XXX/thermostats/0?boost_minutes=30"
+```json
+{
+  "webhooks": {
+    "Boost 30min": {
+      "deviceType": "Scene",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.XXX/thermostats/0?boost_minutes=30"
+      }
+    },
+    "Schedule Enable": {
+      "deviceType": "Switch",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.XXX/settings/thermostats/0?schedule=1"
+      },
+      "off": {
+        "method": "POST",
+        "url": "http://192.168.1.XXX/settings/thermostats/0?schedule=0"
+      }
+    },
+    "Profile Working Day": {
+      "deviceType": "Scene",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.XXX/settings/thermostats/0?schedule_profile=1"
+      }
+    },
+    "Profile Holiday": {
+      "deviceType": "Scene",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.XXX/settings/thermostats/0?schedule_profile=2"
+      }
+    }
+  }
+}
+```
 
-"Schedule Enable": method: POST, Url: "http://192.168.1.XXX/settings/thermostats/0?schedule=1"
-
-"Schedule Disable": method: POST, Url: "http://192.168.1.XXX/settings/thermostats/0?schedule=0"
-
-"Profile Working Day": method: POST, Url: "http://192.168.1.XXX/settings/thermostats/0?schedule_profile=1"
-
-"Profile Holiday": method: POST, Url: "http://192.168.1.XXX/settings/thermostats/0?schedule_profile=2"
+_Replace 192.168.1.XXX with your device IP address._

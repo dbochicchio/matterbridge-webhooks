@@ -4,8 +4,98 @@
   "version": "1.0.0",
   "whiteList": [],
   "blackList": [],
-  "deviceType": "Outlet",
-  "webhooks": {},
+  "webhooks": {
+    "Example Light": {
+      "deviceType": "Light",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.100/light/0?turn=on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.100/light/0?turn=off"
+      }
+    },
+    "Example Dimmable Light": {
+      "deviceType": "DimmableLight",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.101/api/light",
+        "params": {
+          "state": "on"
+        }
+      },
+      "off": {
+        "method": "POST",
+        "url": "http://192.168.1.101/api/light",
+        "params": {
+          "state": "off"
+        }
+      },
+      "brightness": {
+        "method": "PUT",
+        "url": "http://192.168.1.101/api/light/brightness",
+        "params": {
+          "dimLevel": "${brightness}"
+        }
+      }
+    },
+    "Example Outlet": {
+      "deviceType": "Outlet",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.102/relay/0?turn=on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.102/relay/0?turn=off"
+      }
+    },
+    "Example Scene": {
+      "deviceType": "Scene",
+      "on": {
+        "method": "POST",
+        "url": "http://192.168.1.103/api/scene/goodnight",
+        "params": {
+          "trigger": true
+        }
+      }
+    },
+    "Example Multi-Command Light": {
+      "deviceType": "DimmableLight",
+      "on": [
+        {
+          "method": "GET",
+          "url": "http://192.168.1.104/light/power?state=on"
+        },
+        {
+          "method": "GET",
+          "url": "http://192.168.1.104/light/brightness?value=100"
+        }
+      ],
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.104/light/power?state=off"
+      },
+      "brightness": [
+        {
+          "method": "POST",
+          "url": "http://192.168.1.104/api/prepare",
+          "params": {
+            "action": "fadeStart"
+          }
+        },
+        {
+          "method": "POST",
+          "url": "http://192.168.1.104/api/brightness",
+          "params": {
+            "level": "${level.percent}",
+            "duration": 500
+          }
+        }
+      ]
+    }
+  },
   "debug": false,
   "unregisterOnShutdown": false
 }

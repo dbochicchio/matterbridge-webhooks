@@ -44,33 +44,211 @@
       "type": "string",
       "default": "Outlet",
       "enum": ["Outlet", "Switch", "Light"],
-      "description": "Select how to rappresent the webhooks on the controller. Don't use Switch for Alexa."
+      "description": "(Deprecated - use per-device deviceType) Select how to rappresent the webhooks on the controller. Don't use Switch for Alexa."
     },
     "webhooks": {
-      "description": "Define each webhooks. Enter in the first field the name of the webhook (replace newKey with the name of the webhook) and in the right panel the parameters.",
+      "description": "Define each device. Enter in the first field the name of the device (replace newKey with the device name) and in the right panel configure the device type and HTTP endpoints.",
       "type": "object",
       "uniqueItems": true,
       "additionalProperties": {
         "type": "object",
-        "description": "Webhook parameters:",
-        "required": ["method", "httpUrl"],
+        "description": "Device configuration:",
+        "required": ["deviceType"],
         "properties": {
-          "method": {
+          "deviceType": {
             "type": "string",
-            "default": "GET",
-            "enum": ["GET", "POST"],
-            "description": "HTTP method to use for the webhook."
+            "default": "Outlet",
+            "enum": ["Outlet", "Switch", "Light", "DimmableLight", "Scene"],
+            "description": "Select the device type: Outlet, Switch, Light (on/off), DimmableLight (with brightness), or Scene (momentary trigger)"
           },
-          "httpUrl": {
-            "type": "string",
-            "title": "Webhook URL",
-            "description": "URL to which the webhook will send requests."
+          "on": {
+            "title": "ON Action Endpoint(s)",
+            "description": "HTTP endpoint or array of endpoints to call when turning the device ON or triggering a scene. Use an array for sequential commands.",
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Single Command",
+                "required": ["method", "url"],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "default": "GET",
+                    "enum": ["GET", "POST", "PUT"],
+                    "description": "HTTP method (GET, POST, or PUT)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL to call. Use ${param} placeholders for dynamic values (e.g., http://device/api?value=${brightness})"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Additional parameters to send (key-value pairs). For GET requests these become query params, for POST/PUT they go in the request body",
+                    "additionalProperties": {
+                      "type": ["string", "number", "boolean"]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "title": "Multiple Commands (Sequential)",
+                "description": "Array of commands to execute sequentially",
+                "items": {
+                  "type": "object",
+                  "required": ["method", "url"],
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "default": "GET",
+                      "enum": ["GET", "POST", "PUT"],
+                      "description": "HTTP method (GET, POST, or PUT)"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL to call. Supports all placeholder substitutions"
+                    },
+                    "params": {
+                      "type": "object",
+                      "description": "Additional parameters to send",
+                      "additionalProperties": {
+                        "type": ["string", "number", "boolean"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "off": {
+            "title": "OFF Action Endpoint(s)",
+            "description": "HTTP endpoint or array of endpoints to call when turning the device OFF. Use an array for sequential commands.",
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Single Command",
+                "required": ["method", "url"],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "default": "GET",
+                    "enum": ["GET", "POST", "PUT"],
+                    "description": "HTTP method (GET, POST, or PUT)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL to call. Use {param} placeholders for dynamic values"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Additional parameters to send (key-value pairs)",
+                    "additionalProperties": {
+                      "type": ["string", "number", "boolean"]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "title": "Multiple Commands (Sequential)",
+                "description": "Array of commands to execute sequentially",
+                "items": {
+                  "type": "object",
+                  "required": ["method", "url"],
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "default": "GET",
+                      "enum": ["GET", "POST", "PUT"],
+                      "description": "HTTP method (GET, POST, or PUT)"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL to call. Supports all placeholder substitutions"
+                    },
+                    "params": {
+                      "type": "object",
+                      "description": "Additional parameters to send",
+                      "additionalProperties": {
+                        "type": ["string", "number", "boolean"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "brightness": {
+            "title": "Brightness Control Endpoint(s)",
+            "description": "HTTP endpoint or array of endpoints to call when changing brightness (DimmableLight only). Brightness value (0-100) and level (0-254) are automatically included. Use an array for sequential commands.",
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Single Command",
+                "required": ["method", "url"],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "default": "GET",
+                    "enum": ["GET", "POST", "PUT"],
+                    "description": "HTTP method (GET, POST, or PUT)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL to call. Use ${brightness} or ${level} placeholders (e.g., http://device/brightness?value=${brightness})"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Additional parameters to send. 'brightness' (0-100) and 'level' (0-254) are automatically added",
+                    "additionalProperties": {
+                      "type": ["string", "number", "boolean"]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "title": "Multiple Commands (Sequential)",
+                "description": "Array of commands to execute sequentially when brightness changes",
+                "items": {
+                  "type": "object",
+                  "required": ["method", "url"],
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "default": "GET",
+                      "enum": ["GET", "POST", "PUT"],
+                      "description": "HTTP method (GET, POST, or PUT)"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL to call. Supports all placeholder substitutions including ${brightness}, ${level}, ${level.*}"
+                    },
+                    "params": {
+                      "type": "object",
+                      "description": "Additional parameters to send",
+                      "additionalProperties": {
+                        "type": ["string", "number", "boolean"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           },
           "test": {
             "type": "boolean",
             "default": false,
-            "buttonText": "Test",
-            "description": "Test the webhook by sending a request"
+            "buttonText": "Test ON",
+            "description": "Test the ON endpoint by sending a request"
+          },
+          "method": {
+            "type": "string",
+            "description": "(Deprecated - use 'on' endpoint) HTTP method",
+            "enum": ["GET", "POST", "PUT"]
+          },
+          "httpUrl": {
+            "type": "string",
+            "description": "(Deprecated - use 'on' endpoint) Webhook URL"
           }
         }
       }

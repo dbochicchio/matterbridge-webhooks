@@ -1,0 +1,57 @@
+{
+  "name": "Polling Template Example",
+  "type": "DynamicPlatform",
+  "whiteList": [],
+  "blackList": [],
+  "debug": false,
+  "unregisterOnShutdown": false,
+  "webhooks": {
+    "homeassistant_temp": {
+      "deviceType": "TemperatureSensor",
+      "pollState": {
+        "method": "GET",
+        "url": "http://homeassistant.local:8123/api/states/sensor.living_room_temperature",
+        "params": {
+          "Authorization": "Bearer YOUR_LONG_LIVED_ACCESS_TOKEN"
+        }
+      },
+      "pollInterval": 30,
+      "pollTemplate": "state"
+    },
+    "shelly_temp": {
+      "deviceType": "TemperatureSensor",
+      "pollState": {
+        "method": "GET",
+        "url": "http://192.168.1.100/status"
+      },
+      "pollInterval": 60,
+      "pollTemplate": "tmp.tC"
+    },
+    "tasmota_climate": {
+      "deviceType": "ClimateSensor",
+      "pollState": {
+        "method": "GET",
+        "url": "http://192.168.1.101/cm?cmnd=Status%208"
+      },
+      "pollInterval": 60,
+      "pollTemplate": "StatusSNS.BME280"
+    },
+    "nested_sensor": {
+      "deviceType": "TemperatureSensor",
+      "pollState": {
+        "method": "GET",
+        "url": "http://api.example.com/v1/sensors/12345"
+      },
+      "pollInterval": 120,
+      "pollTemplate": "result.data.readings[0].temperature"
+    },
+    "simple_legacy_sensor": {
+      "deviceType": "TemperatureSensor",
+      "pollState": {
+        "method": "GET",
+        "url": "http://legacy-sensor.local/api"
+      },
+      "pollInterval": 60
+    }
+  }
+}

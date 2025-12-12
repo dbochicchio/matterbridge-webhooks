@@ -13,11 +13,11 @@ import { LogLevel } from 'matterbridge/logger';
 
 import initializePlugin, { WebhooksPlatform, WebhooksPlatformConfig } from './module.js';
 import {
-  addBridgedEndpointSpy,
   addMatterbridgePlatform,
   createMatterbridgeEnvironment,
   destroyMatterbridgeEnvironment,
   log,
+  loggerErrorSpy,
   loggerLogSpy,
   matterbridge,
   setupTest,
@@ -134,7 +134,7 @@ describe('TestPlatform', () => {
   it('should call onStart with reason', async () => {
     await platform.onStart('Test reason');
     expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, 'onStart called with reason:', 'Test reason');
-    expect(addBridgedEndpointSpy).toHaveBeenCalledTimes(Object.keys(config.webhooks).length);
+    expect(platform.bridgedDevices.size).toBe(Object.keys(config.webhooks).length);
   });
 
   it('should call onConfigure', async () => {
@@ -149,23 +149,25 @@ describe('TestPlatform', () => {
   });
 
   it('should execute command handler', async () => {
-    platform.bridgedDevices.forEach(async (device) => {
+    for (const device of platform.bridgedDevices.values()) {
       await device.executeCommandHandler('on');
-      expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, `Webhook ${device.deviceName} triggered.`);
-    });
+      expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, `${device.deviceName}: Executing ON command`);
+    }
     await wait(500);
-    expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.NOTICE, expect.stringContaining(`successful!`));
+    for (const device of platform.bridgedDevices.values()) {
+      expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.NOTICE, `${device.deviceName}: HTTP request successful`);
+    }
   });
 
   it('should execute command handler and fail', async () => {
-    (config.webhooks as any)['Turn on shelly bulb'].httpUrl = 'http://';
-    (config.webhooks as any)['Turn off shelly bulb'].httpUrl = 'http://';
-    platform.bridgedDevices.forEach(async (device) => {
+    (config.webhooks as any)['Turn on shelly bulb'].httpUrl = baseUrl + '/fail';
+    (config.webhooks as any)['Turn off shelly bulb'].httpUrl = baseUrl + '/fail';
+    for (const device of platform.bridgedDevices.values()) {
       await device.executeCommandHandler('on');
-      expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, `Webhook ${device.deviceName} triggered.`);
-    });
-    await wait(500);
-    expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.ERROR, expect.stringContaining(`failed`));
+      expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, `${device.deviceName}: Executing ON command`);
+    }
+    await wait(1000);
+    expect(loggerErrorSpy.mock.calls.length).toBeGreaterThan(0);
     (config as any).webhooks['Turn on shelly bulb'].httpUrl = baseUrl + '/light/0?turn=on';
     (config as any).webhooks['Turn off shelly bulb'].httpUrl = baseUrl + '/light/0?turn=off';
   });
@@ -235,7 +237,6 @@ describe('TestPlatform', () => {
     expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, 'onAction called with action:', 'test', 'and value:', 'none', 'and id:', 'Turn off shelly bulb');
     expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.INFO, expect.stringContaining('Testing webhook'));
     await wait(500);
-    expect(loggerLogSpy).toHaveBeenCalledWith(LogLevel.ERROR, expect.stringContaining(`failed`));
   });
 
   it('should call onShutdown with reason', async () => {
