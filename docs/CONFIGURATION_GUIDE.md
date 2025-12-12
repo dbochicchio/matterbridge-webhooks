@@ -1,22 +1,26 @@
-# Matterbridge HTTP Configuration Guide
+# How to Configure Your Devices
 
-This guide explains how to configure devices with HTTP endpoints for Matterbridge.
+This guide walks you through setting up devices with HTTP APIs in Matterbridge.
 
-## Overview
+## Getting Started
 
-The plugin now supports per-device configuration with multiple HTTP endpoints for different actions. You can map various device types (lights, outlets, switches, scenes) to Matterbridge and use HTTP endpoints (GET/POST/PUT) as actions.
+Each device in your configuration tells the plugin:
 
-## Supported Device Types
+1. **What type of device it is** (light, switch, sensor, etc.)
+2. **What API endpoints to call** for each action (on, off, brightness, etc.)
+3. **What parameters to send** to those endpoints
 
-- **Outlet** - Simple on/off outlet/plug
-- **Switch** - Generic on/off switch
-- **Light** - Simple on/off light
-- **DimmableLight** - Light with brightness control (0-100%)
-- **Scene** - Momentary trigger (automatically turns off after activation)
+## Common Device Types
 
-## Configuration Structure
+- **Switch** or **Outlet** - Simple on/off device
+- **Light** - On/off light
+- **DimmableLight** - Light you can dim
+- **Sensor** - Device that reports values (temperature, motion, etc.)
+- **ColorLight** - Light you can change colors on
+- **Thermostat** - Temperature control
+- **Cover** - Blinds or shades
 
-### Basic Example (Light)
+## Basic Setup
 
 ```json
 {
@@ -95,15 +99,18 @@ The plugin now supports per-device configuration with multiple HTTP endpoints fo
 ## HTTP Methods
 
 ### GET
+
 - Parameters are added to the URL as query parameters
 - Example: `http://device/api?state=on&value=100`
 
 ### POST
+
 - Parameters are sent in the request body as JSON
 - URL placeholders like `${brightness}` are replaced with actual values
 - Example: `{"state": "on", "brightness": 75}`
 
 ### PUT
+
 - Works the same as POST
 - Use based on your API requirements
 
@@ -141,6 +148,7 @@ When brightness is set to 75%, the URL becomes:
 ```
 
 Request body becomes:
+
 ```json
 {
   "level": 191,
@@ -153,10 +161,12 @@ Request body becomes:
 ### Standard Variables
 
 For **brightness** endpoint:
+
 - `${brightness}` - Brightness percentage (0-100)
 - `${level}` - Matter brightness level (0-254)
 
 For **color** endpoints:
+
 - `${hue}` - Hue in degrees (0-360)
 - `${saturation}` - Saturation percentage (0-100)
 - `${colorX}` - CIE X coordinate (0-1)
@@ -164,6 +174,7 @@ For **color** endpoints:
 - `${colorTemperatureMireds}` - Color temperature in mireds
 
 For **cover** endpoints:
+
 - `{position}` - Cover position percentage (0-100)
 - `{tilt}` - Tilt angle percentage (0-100)
 
@@ -198,6 +209,7 @@ Apply mathematical operations to intensity:
 - `${intensity.math(sqrt)}` - Square root
 
 All math functions support `.hex` suffix for hexadecimal output:
+
 - `${intensity.math(floor).hex}` - Floor value as hex
 
 #### Example: ha-bridge Intensity Replacement
@@ -217,6 +229,7 @@ All math functions support `.hex` suffix for hexadecimal output:
 ```
 
 When brightness is set to 75%:
+
 - URL becomes: `http://192.168.1.100/api?brightness=75&level=191&prev=0`
 
 For POST/PUT requests, intensity replacements work in parameter values:
@@ -236,6 +249,7 @@ For POST/PUT requests, intensity replacements work in parameter values:
 ```
 
 Request body becomes:
+
 ```json
 {
   "value": "75",
@@ -247,6 +261,7 @@ Request body becomes:
 #### Practical Use Cases
 
 **PWM Control (0-255 scale):**
+
 ```json
 {
   "brightness": {
@@ -257,6 +272,7 @@ Request body becomes:
 ```
 
 **Percentage-based API:**
+
 ```json
 {
   "brightness": {
@@ -270,6 +286,7 @@ Request body becomes:
 ```
 
 **Logarithmic dimming:**
+
 ```json
 {
   "brightness": {
@@ -283,6 +300,7 @@ Request body becomes:
 ```
 
 **Transition detection:**
+
 ```json
 {
   "brightness": {
@@ -565,7 +583,7 @@ Instead of two separate actions, combine them:
 - **Error handling**: If one command fails, others still execute (non-blocking)
 - **Timing**: Commands execute as fast as the network allows; use your device's API for delays if needed
 - **Logging**: Each command is logged separately for troubleshooting
-- **Substitution**: All placeholders (${level.*}, ${color.*}, etc.) work in every command
+- **Substitution**: All placeholders (${level._}, ${color._}, etc.) work in every command
 
 ## Backward Compatibility
 
@@ -597,22 +615,26 @@ You can test your endpoints directly from the Matterbridge configuration UI:
 ## Troubleshooting
 
 ### Device not responding
+
 - Check the URL is accessible from the Matterbridge host
 - Verify the HTTP method matches your API requirements
 - Check Matterbridge logs for error messages
 - Test the endpoint manually with curl or a browser
 
 ### Brightness not working
+
 - Ensure `deviceType` is set to `"DimmableLight"`
 - Verify the `brightness` endpoint is configured
 - Check if your device expects brightness as 0-100 or 0-254
 - Use the correct placeholder: `${brightness}` for percentage, `${level}` for Matter level
 
 ### Scene triggers but doesn't turn off
+
 - This is expected behavior - scenes automatically turn off after 1 second
 - If you need it to stay on, use `"deviceType": "Switch"` instead
 
 ### Parameters not being sent correctly
+
 - For GET requests: parameters become query parameters
 - For POST/PUT requests: parameters are sent in the JSON body
 - URL placeholders are replaced before parameters are added
@@ -630,6 +652,7 @@ You can test your endpoints directly from the Matterbridge configuration UI:
 ## Support
 
 For issues and questions:
+
 - Check the Matterbridge logs
 - Review the configuration schema in the UI
 - Refer to your device's HTTP API documentation

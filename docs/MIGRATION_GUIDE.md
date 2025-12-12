@@ -1,31 +1,38 @@
-# Migration Summary: HTTP Endpoints for Matterbridge
+# Getting Started with Device Configuration
 
-## What Changed
+This guide explains how to configure devices for Matterbridge.
 
-The plugin has been enhanced to support per-device configuration with multiple HTTP endpoints for different actions. This allows you to map various device types to Matterbridge with flexible HTTP control.
+## Key Concepts
+
+The plugin lets you configure devices to work with HTTP APIs. Each device has endpoints - API calls - for different actions like turning on/off or adjusting brightness.
 
 ## Key New Features
 
 ### 1. **Per-Device Type Configuration**
+
 - Each device can now have its own type (Outlet, Switch, Light, DimmableLight, Scene)
 - No longer limited to a single global device type
 
 ### 2. **Multiple HTTP Endpoints**
+
 - **on**: Endpoint called when turning device ON
 - **off**: Endpoint called when turning device OFF
 - **brightness**: Endpoint called when adjusting brightness (DimmableLight only)
 
 ### 3. **HTTP Method Support**
+
 - **GET**: Parameters as query strings
 - **POST**: Parameters in JSON body
 - **PUT**: Parameters in JSON body (new!)
 
 ### 4. **Dynamic Parameter Substitution**
+
 - Use placeholders like `${brightness}` or `${level}` in URLs
 - Placeholders are replaced with actual values when requests are made
 - Custom parameters can be included in each endpoint
 
 ### 5. **New Device Types**
+
 - **DimmableLight**: Light with brightness control (0-100%)
 - **Scene**: Momentary trigger that auto-turns off
 
@@ -70,6 +77,7 @@ The plugin has been enhanced to support per-device configuration with multiple H
 ## Configuration Examples
 
 ### Before (Old Format)
+
 ```json
 {
   "deviceType": "Outlet",
@@ -83,6 +91,7 @@ The plugin has been enhanced to support per-device configuration with multiple H
 ```
 
 ### After (New Format)
+
 ```json
 {
   "webhooks": {
@@ -111,6 +120,7 @@ The plugin has been enhanced to support per-device configuration with multiple H
 ## Backward Compatibility
 
 ✅ **Old configurations still work!**
+
 - The plugin automatically converts old format to new format
 - Uses global `deviceType` if per-device type is not specified
 - Creates `on` endpoint from old `httpUrl` and `method` fields
@@ -118,8 +128,9 @@ The plugin has been enhanced to support per-device configuration with multiple H
 ## Testing
 
 You can test your endpoints:
+
 1. Configure the device in the UI
-2. Set `test: true` 
+2. Set `test: true`
 3. Click "Test ON" button
 4. Check logs for success/failure
 

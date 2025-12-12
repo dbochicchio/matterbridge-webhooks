@@ -1,10 +1,10 @@
-# Poll Templates
+# Sensor Polling with JSON Extraction
 
-This plugin now supports flexible JSON path extraction for polling sensor data, inspired by the MQTT Controller's JSON extraction syntax.
+This guide shows you how to set up sensors that automatically read values from your device's API responses.
 
-## Overview
+## What Is JSON Extraction?
 
-When polling sensor endpoints, the `pollTemplate` field allows you to specify a dot-notation path to extract values from nested JSON responses. This is similar to the MQTT Controller's `source` feature.
+When your sensor API returns data like `{"temperature": 22.5, "humidity": 65}`, you need to tell the plugin which value to use. JSON extraction lets you specify the path to the value you want using simple dot notation.
 
 ## Basic Usage
 

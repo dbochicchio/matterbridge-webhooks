@@ -1,12 +1,13 @@
-# Multiple Commands Per Endpoint Feature
+# Running Multiple Commands for One Action
 
-## Overview
+## What This Means
 
-This feature allows you to specify **multiple HTTP commands** to be executed **sequentially** for a single endpoint action. Previously, you could only configure one command per action (on, off, brightness, etc.). Now you can execute multiple commands in sequence.
+Instead of running one API call per action, you can run multiple in order. For example, when you turn on a light, you can simultaneously execute commands to power it on AND set the brightness.
 
-## What's New
+## Before and After
 
 ### Before (Single Command Only)
+
 ```json
 {
   "webhooks": {
@@ -22,6 +23,7 @@ This feature allows you to specify **multiple HTTP commands** to be executed **s
 ```
 
 ### Now (Multiple Commands Supported)
+
 ```json
 {
   "webhooks": {
@@ -77,7 +79,7 @@ private async executeHttpRequest(
   try {
     // Handle both single endpoint and array of endpoints
     const commands: HttpCommand[] = Array.isArray(endpoint) ? endpoint : [endpoint];
-    
+
     // Execute commands sequentially
     for (const command of commands) {
       await this.executeCommand(deviceName, command, params, level, hue, saturation, brightness);
@@ -115,6 +117,7 @@ private async executeCommand(
 ```
 
 This method handles:
+
 - Level substitution (all 13 patterns with dual naming)
 - Color substitution (all 11 patterns)
 - Time substitution
@@ -264,6 +267,7 @@ Multi-step warmup for heating devices:
 ## Execution Behavior
 
 ### Sequential Execution
+
 Commands in the array are executed **one after another** in the order specified:
 
 ```
@@ -271,19 +275,24 @@ Request 1 → Wait for response → Request 2 → Wait for response → Request 
 ```
 
 ### Error Handling
+
 If a command fails:
+
 - **The error is logged** but execution continues
 - **Subsequent commands still execute** (non-blocking)
 - **All errors are recorded** for troubleshooting
 
 ### Timing
+
 - Commands execute as fast as the network allows
 - No built-in delays between commands
 - Use device API parameters if delays are needed (e.g., `"delay": 500`)
 - Network timeouts still apply to each request (default 5 seconds)
 
 ### Logging
+
 Each command execution is logged separately:
+
 ```
 deviceName: HTTP request successful
 deviceName: HTTP request successful
@@ -295,6 +304,7 @@ deviceName: HTTP request successful
 All existing placeholders work in **every command** of the sequence:
 
 ### Level/Brightness Placeholders
+
 ```json
 {
   "brightness": [
@@ -305,6 +315,7 @@ All existing placeholders work in **every command** of the sequence:
 ```
 
 Available patterns:
+
 - `${level.percent}` - Current percentage (0-100)
 - `${level.byte}` - Current byte value (0-254)
 - `${level.previous_percent}` - Previous percentage
@@ -312,6 +323,7 @@ Available patterns:
 - And all other 13 patterns with dual naming (`${intensity.*}` also works)
 
 ### Color Placeholders
+
 ```json
 {
   "colorHue": [
@@ -323,12 +335,14 @@ Available patterns:
 ```
 
 Available patterns:
+
 - `${color.r}`, `${color.g}`, `${color.b}` - RGB values (0-255)
 - `${color.rgbx}` - Full RGB hex (e.g., "ff0000")
 - `${color.hsb}` - HSB combined
 - And all other 11 patterns
 
 ### Time Placeholders
+
 ```json
 {
   "on": [
@@ -340,12 +354,14 @@ Available patterns:
 ## Testing
 
 ### Via UI
+
 1. Configure your device with multiple commands
 2. Set `"test": true` in device config
 3. Click "Test ON" button
 4. Check logs for each command execution
 
 ### Via Manual Testing
+
 Test with curl:
 
 ```bash
@@ -361,7 +377,7 @@ curl "http://device/brightness?value=100"
 Updated `matterbridge-webhooks.schema.json` to support both single and array endpoints:
 
 - **on** endpoint: Single command or array of commands
-- **off** endpoint: Single command or array of commands  
+- **off** endpoint: Single command or array of commands
 - **brightness** endpoint: Single command or array of commands
 - Other endpoints also updated (colorTemperature, colorHue, colorSaturation, colorXY, coverPosition, coverTilt, lock, unlock, etc.)
 
@@ -405,6 +421,7 @@ Updated all documentation to include multiple commands feature:
 ## Future Enhancements
 
 Potential future improvements:
+
 - Configurable delays between commands
 - Conditional command execution (if first succeeds, then execute second)
 - Rollback on failure (execute reverse sequence if error occurs)

@@ -1,455 +1,171 @@
-# 📑 Documentation Index - ha-bridge Intensity & Color Replacements
+# 📑 Documentation Index
 
-## Quick Navigation
+Your complete guide to configuring the Matterbridge Webhooks plugin with 26+ device types, advanced brightness control, color support, and sensor polling.
 
-### 🚀 I Want To...
+## 🚀 Quick Start by Task
 
-**Get Started Quickly**
-→ Start with [QUICK_REFERENCE.md](QUICK_REFERENCE.md) (5 ready-to-use examples)
+### I want to configure a...
 
-**Set Up Sensor Polling**
-→ Read [POLL_TEMPLATES.md](POLL_TEMPLATES.md) (JSON path extraction guide)
+**Simple Light or Switch**
+→ [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Copy a basic example and adapt
 
-**Understand All Intensity Patterns**
-→ Read [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) (complete reference)
+**Dimmable Light with Brightness Control**
+→ [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - See PWM and percentage examples
 
-**Understand All Color Patterns**
-→ Read [HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md) (complete reference)
+**Color Light (RGB, Hue, Temperature)**
+→ [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Color control examples with real devices
 
-**Learn Step-by-Step**
-→ Follow [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md) (detailed walkthrough)
+**Temperature or Humidity Sensor**
+→ [POLL_TEMPLATES.md](POLL_TEMPLATES.md) - Polling setup with JSON extraction
 
-**See What Changed**
-→ Check [CHANGES_SUMMARY.md](CHANGES_SUMMARY.md) (implementation details)
+**Complex Multi-Step Device**
+→ [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md) - Multiple commands per endpoint
 
-**Understand Technical Details**
-→ Review [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md) (architecture & specs)
-
-**Get Complete Overview**
-→ Read [HA_BRIDGE_SUMMARY.md](HA_BRIDGE_SUMMARY.md) (full feature summary)
-
-**Verify Implementation**
-→ Check [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md) (all items ✅)
+**Window Blinds, Lock, or Thermostat**
+→ [DEVICE_TYPES.md](DEVICE_TYPES.md) - Device-specific configuration options
 
 ---
 
-## 📚 Documentation Files
+## 📚 Core Configuration Guides
 
-### Primary Documentation
+### Getting Started
 
-#### [README.md](README.md)
+- **[README.md](README.md)** - Feature overview and quick links
 
-**Purpose**: Main project documentation  
-**Best For**: Project overview and feature list  
-**Length**: ~300 lines  
-**Updated**: Links to ha-bridge resources (intensity & color)
+### Configuration Reference
 
-#### [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
+- **[CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)** - Complete setup guide with examples for all features
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - 10+ copy-paste ready configurations
+- **[DEVICE_TYPES.md](DEVICE_TYPES.md)** - All 26 device types with clusters and endpoints
 
-**Purpose**: Common device configurations  
-**Best For**: Copy-paste ready examples  
-**Length**: ~550 lines  
-**New Sections**:
+### Advanced Features
 
-- ha-bridge intensity examples (5 configs)
-- ha-bridge color examples (4 configs)
-- Placeholder format reference
-- Color value reference table
+- **[HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)** - 13 brightness patterns (percentages, bytes, hex, transitions, math)
+- **[HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md)** - 11 color patterns (RGB, hex, HSB)
+- **[POLL_TEMPLATES.md](POLL_TEMPLATES.md)** - JSON path extraction for sensor APIs
+- **[MULTI_COMMAND_FEATURE.md](MULTI_COMMAND_FEATURE.md)** - Sequential command execution
 
-#### [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)
+### Reference Guides
 
-**Purpose**: Comprehensive setup guide  
-**Best For**: Learning configuration options  
-**Length**: ~500 lines  
-**New Section**: ha-bridge intensity replacements (~200 lines)
-
-#### [DEVICE_TYPES.md](DEVICE_TYPES.md)
-
-**Purpose**: Reference for all 25+ device types  
-**Best For**: Device type details and clusters  
-**Length**: 900+ lines  
-**Relevant For**: Brightness-capable device types
-
-#### [POLL_TEMPLATES.md](POLL_TEMPLATES.md) ⭐
-
-**Purpose**: JSON path extraction for sensor polling  
-**Best For**: Setting up sensors with complex API responses  
-**Length**: 300+ lines  
-**Sections**:
-
-- Overview of poll template syntax
-- Basic field extraction examples
-- Nested object extraction
-- Array indexing syntax (`data[0].value`)
-- Device type support (all sensor types)
-- Real-world examples (Home Assistant, Shelly, Tasmota)
-- Backward compatibility with legacy field names
-- Template syntax reference
-- Error handling and tips
-
-**Key Topics**:
-
-- MQTT Controller-inspired JSON path extraction
-- Dot notation paths (e.g., `sensors.temperature`)
-- Array indexing (e.g., `data.values[0].temp`)
-- ClimateSensor object extraction
-- Home Assistant REST API integration
-- Shelly device polling
-- Tasmota sensor data
-- Custom API integration
+- **[HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)** - Technical reference for advanced users
+- **[HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)** - Technical architecture (for developers)
+- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - What changed from previous versions
 
 ---
 
-### ha-bridge Intensity Documentation
+## � Configuration by Feature
 
-#### [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) ⭐
+### Basic Device Control
 
-**Purpose**: Complete reference for all 13 patterns  
-**Best For**: Understanding each replacement pattern  
-**Length**: 500+ lines  
-**Sections**:
+These guides cover on/off, brightness, and color:
 
-- Quick reference table (all patterns at a glance)
-- Placeholder format guide (standard vs ha-bridge)
-- `$${brightness}` alias documentation
-- Detailed pattern documentation
-- 7 real-world integration examples
-- Conversion formulas
-- Best practices
-- Troubleshooting guide
-- Device-specific examples
+| Feature                | Guide                                                                                                           | Best For               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **On/Off Switches**    | [QUICK_REFERENCE.md](QUICK_REFERENCE.md)                                                                        | Simple relay devices   |
+| **Brightness Control** | [QUICK_REFERENCE.md](QUICK_REFERENCE.md) + [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) | Dimmable lights, PWM   |
+| **Color Control**      | [QUICK_REFERENCE.md](QUICK_REFERENCE.md) + [HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md)         | RGB/RGBW lights        |
+| **Color Temperature**  | [QUICK_REFERENCE.md](QUICK_REFERENCE.md)                                                                        | Warm/cool white lights |
 
-**Key Topics**:
+### Sensor Configuration
 
-- Current intensity values (5 patterns)
-- Previous intensity values (3 patterns)
-- Math functions (5 patterns with .hex)
-- Common conversion formulas
-- Integration scenarios table
-- Real-world use cases
+| Sensor Type        | Setup Guide                            | Use Case               |
+| ------------------ | -------------------------------------- | ---------------------- |
+| **Temperature**    | [POLL_TEMPLATES.md](POLL_TEMPLATES.md) | Weather, environmental |
+| **Humidity**       | [POLL_TEMPLATES.md](POLL_TEMPLATES.md) | Moisture monitoring    |
+| **Motion/Contact** | [POLL_TEMPLATES.md](POLL_TEMPLATES.md) | Security sensors       |
+| **Illuminance**    | [POLL_TEMPLATES.md](POLL_TEMPLATES.md) | Light level sensing    |
+| **Multi-Sensor**   | [POLL_TEMPLATES.md](POLL_TEMPLATES.md) | Climate sensors        |
 
-#### [HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md) ⭐
+### Advanced Device Control
 
-**Purpose**: Complete reference for all 11 color patterns  
-**Best For**: Understanding color replacement patterns  
-**Length**: 700+ lines  
-**Sections**:
-
-- Quick reference table (all color patterns at a glance)
-- RGB integer values (${color.r}, ${color.g}, ${color.b})
-- RGB hex values (${color.rx}, ${color.gx}, ${color.bx}, ${color.rgbx})
-- HSB format string (${color.hsb})
-- Individual HSB components (${color.h}, ${color.s}, ${color.b})
-- Time replacement (${time.millis})
-- `$${brightness}` alias documentation
-- 4 complete real-world examples (RGB, Hex, HSB, Advanced)
-- Color space conversion details
-- HSV to RGB conversion table
-- Combining intensity and color replacements
-- Limitations and considerations
-
-**Key Topics**:
-
-- RGB color extraction and hex conversion
-- HSV to RGB conversion algorithm
-- HSB format string generation
-- Time milliseconds support
-- Color device integration
-- Complete end-to-end examples
-
-#### [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-
-**Purpose**: Technical implementation details  
-**Best For**: Understanding the code architecture  
-**Length**: 300+ lines  
-**Sections**:
-
-- Overview and architecture
-- Core implementation details
-- New method documentation (intensity and color)
-- Enhanced method documentation
-- Handler updates
-- Intensity & color value flow diagram
-- Supported conversions
-- Usage examples
-- Backward compatibility
-
-#### [HA_BRIDGE_SUMMARY.md](HA_BRIDGE_SUMMARY.md)
-
-**Purpose**: Complete feature summary  
-**Best For**: Comprehensive overview  
-**Length**: 400+ lines  
-**Sections**:
-
-- What was implemented
-- All supported patterns (intensity + color)
-- 5 usage examples
-- Integration scenarios table
-- Performance metrics
-- Backward compatibility
-- Documentation structure
-- Testing instructions
-- Learning path
+| Device Type            | Configuration                                        | Examples                |
+| ---------------------- | ---------------------------------------------------- | ----------------------- |
+| **Window Blinds**      | [DEVICE_TYPES.md](DEVICE_TYPES.md)                   | Position & tilt control |
+| **Door Locks**         | [DEVICE_TYPES.md](DEVICE_TYPES.md)                   | Lock/unlock endpoints   |
+| **Thermostats**        | [DEVICE_TYPES.md](DEVICE_TYPES.md)                   | Heating & cooling       |
+| **Mode Switches**      | [DEVICE_TYPES.md](DEVICE_TYPES.md)                   | Multi-option devices    |
+| **Multi-Step Actions** | [MULTI_COMMAND_FEATURE.md](MULTI_COMMAND_FEATURE.md) | Sequential commands     |
 
 ---
 
-### Implementation & Status
+## 🔍 Finding What You Need
 
-#### [CHANGES_SUMMARY.md](CHANGES_SUMMARY.md)
+### By Device
 
-**Purpose**: Detailed list of all changes  
-**Best For**: Tracking what was modified  
-**Length**: ~500 lines  
-**Details**:
+Looking for a specific device type?
+→ See [DEVICE_TYPES.md](DEVICE_TYPES.md) for complete list with all options
 
-- Files changed with line counts
-- Specific changes to each file
-- Key features implemented
-- Statistics (code, docs, patterns)
-- Integration examples by scenario
-- Version information
+### By API Integration
 
-#### [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md)
+Working with a specific service or device?
+→ Check [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for Shelly, Home Assistant, Tasmota, Node-RED examples
 
-**Purpose**: Full implementation verification  
-**Best For**: Confirming everything is complete  
-**Length**: ~400 lines  
-**Sections**:
+### By Brightness Format
 
-- Code changes (all items ✅)
-- Documentation (all items ✅)
-- Features implemented (all items ✅)
-- Documentation sections (all items ✅)
-- Examples provided (all items ✅)
-- Quality assurance (all items ✅)
-- Statistics and reference
-- Final verification
+Need to convert between formats?
+→ See [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) - conversion formulas and examples
 
-#### [STATUS_FINAL.md](STATUS_FINAL.md)
+### By Color Space
 
-**Purpose**: Final status and quick summary  
-**Best For**: Quick overview of what's done  
-**Length**: ~250 lines  
-**Contains**:
+Working with RGB, HSB, or XY colors?
+→ See [HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md) - all color formats explained
 
-- Status badge: ✅ READY FOR PRODUCTION
-- Quick start examples (3 scenarios)
-- Documentation map table
-- Key features checklist
-- Statistics table
-- Quality checklist
-- Support resources
+### By Sensor API
 
----
-
-### Implementation Guides
-
-#### [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)
-
-**Purpose**: Guide for users upgrading  
-**Best For**: Understanding what changed  
-**Note**: Updated to mention new features
-
-#### [DEVICE_TYPES.md](DEVICE_TYPES.md)
-
-**Purpose**: Complete 25+ device types reference  
-**Best For**: Device type selection and features  
-**Note**: Relevant sections for brightness control
-
----
-
-## 🎯 Learning Paths
-
-### Path 1: Quick Start (30 minutes)
-
-1. Read: [STATUS_FINAL.md](STATUS_FINAL.md) (overview)
-2. Copy: Example from [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-3. Adapt: To your device
-4. Test: Using test feature
-5. Deploy: To Matterbridge
-
-### Path 2: Intermediate (1-2 hours)
-
-1. Review: [README.md](README.md) (updated features)
-2. Study: [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)
-3. Learn: [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) (patterns)
-4. Implement: Your configuration
-5. Reference: As needed for troubleshooting
-
-### Path 3: Advanced (2-4 hours)
-
-1. Understand: [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-2. Master: [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)
-3. Explore: [HA_BRIDGE_SUMMARY.md](HA_BRIDGE_SUMMARY.md)
-4. Implement: Complex scenarios
-5. Optimize: For your specific needs
-
-### Path 4: Reference (as needed)
-
-- Quick questions → [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-- Pattern details → [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)
-- How it works → [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-- Problem solving → [STATUS_FINAL.md](STATUS_FINAL.md) + Troubleshooting
-- Technical specs → [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-
----
-
-## 📖 Pattern Reference
-
-### All 13 Patterns Quick Reference
-
-| #   | Pattern                                 | Range     | Format  | Use Case        |
-| --- | --------------------------------------- | --------- | ------- | --------------- |
-| 1   | `${intensity.percent}`                  | 0-100     | Integer | Percentage APIs |
-| 2   | `${intensity.decimal_percent}`          | 0.00-1.00 | Decimal | Normalized APIs |
-| 3   | `${intensity.byte}`                     | 0-254     | Integer | PWM control     |
-| 4   | `${intensity.percent.hex}`              | 00-64     | Hex     | Hex percentage  |
-| 5   | `${intensity.byte.hex}`                 | 00-fe     | Hex     | Hex byte        |
-| 6   | `${intensity.previous_percent}`         | 0-100     | Integer | Transition from |
-| 7   | `${intensity.previous_decimal_percent}` | 0.00-1.00 | Decimal | Previous state  |
-| 8   | `${intensity.previous_byte}`            | 0-254     | Integer | Previous byte   |
-| 9   | `${intensity.math(floor)}`              | varies    | Integer | Floor calc      |
-| 10  | `${intensity.math(ceil)}`               | varies    | Integer | Ceiling calc    |
-| 11  | `${intensity.math(round)}`              | varies    | Integer | Round calc      |
-| 12  | `${intensity.math(abs)}`                | varies    | Integer | Absolute value  |
-| 13  | `${intensity.math(sqrt)}`               | varies    | Decimal | Square root     |
-
-**All math functions support `.hex` suffix** (e.g., `${intensity.math(floor).hex}`)
-
----
-
-## 🔗 Cross References
-
-### By Topic
-
-**Understanding Patterns**
-
-- Quick summary: [STATUS_FINAL.md](STATUS_FINAL.md)
-- Complete reference: [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)
-- Implementation details: [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-
-**Ready-to-Use Examples**
-
-- 5 examples: [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-- 7 scenarios: [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)
-- Tutorial: [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md)
-
-**Technical Information**
-
-- Architecture: [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-- Performance: [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-- Integration: [HA_BRIDGE_SUMMARY.md](HA_BRIDGE_SUMMARY.md)
-
-**Verification**
-
-- What changed: [CHANGES_SUMMARY.md](CHANGES_SUMMARY.md)
-- Checklist: [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md)
-- Status: [STATUS_FINAL.md](STATUS_FINAL.md)
-
-### By Device Type
-
-**Lights with Brightness**
-
-- DimmableLight → All intensity patterns supported
-- ColorTemperatureLight → All intensity patterns supported
-- ExtendedColorLight → All intensity patterns supported
-- ColorLightHS → All intensity patterns supported
-- ColorLightXY → All intensity patterns supported
-
-**Covers**
-
-- CoverLift → Position to intensity conversion
-- CoverLiftTilt → Position to intensity conversion
-
-**See**: [DEVICE_TYPES.md](DEVICE_TYPES.md) for device details
-
----
-
-## 🎯 Quick Lookups
-
-### "How do I use ${intensity.percent}?"
-
-→ [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md#intensity-percent)
-
-### "Show me a PWM example"
-
-→ [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - PWM Control section
-
-### "What's the difference between formats?"
-
-→ [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md#detailed-replacements)
-
-### "How do transitions work?"
-
-→ [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Transition example
-
-### "What are the conversion formulas?"
-
-→ [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md#common-conversion-formulas)
-
-### "Is my existing config still supported?"
-
-→ [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md#available-variables)
-
-### "How does this work internally?"
-
-→ [HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)
-
-### "What was changed?"
-
-→ [CHANGES_SUMMARY.md](CHANGES_SUMMARY.md)
-
----
-
-## 📊 Documentation Statistics
-
-| File                             | Lines      | Type      | Status |
-| -------------------------------- | ---------- | --------- | ------ |
-| README.md                        | ~300       | Updated   | ✅     |
-| QUICK_REFERENCE.md               | ~380       | Updated   | ✅     |
-| CONFIGURATION_GUIDE.md           | ~500       | Updated   | ✅     |
-| DEVICE_TYPES.md                  | 900+       | Reference | ✅     |
-| HA_BRIDGE_INTENSITY_REFERENCE.md | 500+       | New       | ✅     |
-| HA_BRIDGE_IMPLEMENTATION.md      | 300+       | New       | ✅     |
-| HA_BRIDGE_SUMMARY.md             | 400+       | New       | ✅     |
-| CHANGES_SUMMARY.md               | ~500       | New       | ✅     |
-| IMPLEMENTATION_CHECKLIST.md      | ~400       | New       | ✅     |
-| STATUS_FINAL.md                  | ~250       | New       | ✅     |
-| **TOTAL**                        | **~3,900** | -         | ✅     |
-
----
-
-## 📝 How to Use This Index
-
-1. **Find what you need** - Use sections above
-2. **Click the link** - Opens that document
-3. **Read the content** - Specific to your need
-4. **Cross-reference** - Follow links as needed
-5. **Test and implement** - Use provided examples
-
----
-
-## 🚀 Getting Started
-
-**First time here?** → Start with [STATUS_FINAL.md](STATUS_FINAL.md)
-
-**Ready to implement?** → Go to [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-
-**Want to learn everything?** → Read [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md)
-
-**Have questions?** → Check [CONFIGURATION_GUIDE.md](CONFIGURATION_GUIDE.md) troubleshooting
+Polling a REST API for sensor data?
+→ See [POLL_TEMPLATES.md](POLL_TEMPLATES.md) - JSON path extraction examples
 
 ---
 
 ## ✅ What's Included
 
-✅ Complete implementation (~350 lines of code)  
-✅ All 13 patterns working  
-✅ Comprehensive documentation (~1,500 lines)  
+✅ 26+ device types (lights, sensors, covers, locks, thermostats)  
+✅ 13 brightness patterns + 11 color patterns  
+✅ Sensor polling with JSON path extraction  
+✅ Sequential multi-command execution  
 ✅ 20+ ready-to-use examples  
-✅ Multiple learning paths  
 ✅ Full backward compatibility  
 ✅ Zero breaking changes  
 ✅ Production ready
 
-**Everything you need to use ha-bridge intensity replacements!** 🎉
+---
+
+## 🆘 Common Tasks & Solutions
+
+### "My brightness values aren't in the right range"
+
+→ Check [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md#common-conversion-formulas) for conversion formulas
+
+### "My color RGB values look wrong"
+
+→ See [HA_BRIDGE_COLOR_REFERENCE.md](HA_BRIDGE_COLOR_REFERENCE.md) - RGB/HSV conversion section
+
+### "My sensor isn't updating values"
+
+→ Review [POLL_TEMPLATES.md](POLL_TEMPLATES.md) - JSON path extraction section
+
+### "I need to execute multiple commands for one action"
+
+→ Check [MULTI_COMMAND_FEATURE.md](MULTI_COMMAND_FEATURE.md) for examples
+
+### "I'm not sure which endpoint to use"
+
+→ Find your device type in [DEVICE_TYPES.md](DEVICE_TYPES.md)
+
+### "My existing configuration stopped working"
+
+→ See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for backward compatibility info
+
+---
+
+## 📊 Quick Feature Overview
+
+**Device Types**: Outlets, switches, lights, color lights, sensors (7 types), covers, locks, thermostats, mode select, mounted switches
+
+**Brightness Control**: Percentages, byte values, hex, decimal, transitions, math operations
+
+**Color Support**: RGB (integer & hex), HSB, color temperature, XY color space
+
+**Sensors**: Temperature, humidity, pressure, illuminance, motion, contact, combined climate
+
+**Advanced**: Multiple commands per endpoint, JSON path extraction, full ha-bridge pattern support

@@ -1,49 +1,53 @@
-# ha-bridge Intensity Replacement Implementation
+# How Brightness Patterns Work (Technical Reference)
 
 ## Overview
 
-The Matterbridge HTTP plugin now supports the complete set of **ha-bridge intensity replacement patterns**, enabling advanced brightness handling and device control with complex requirements.
+This document explains the technical details behind brightness patterns. Most users should see [HA_BRIDGE_INTENSITY_REFERENCE.md](HA_BRIDGE_INTENSITY_REFERENCE.md) for how to use them.
 
-## What Was Added
+## Technical Implementation
 
 ### 1. Core Implementation in `src/module.ts`
 
 #### New Class Properties
+
 - `private deviceIntensity = new Map<string, number>()` - Stores current intensity (0-254) for each device to support previous value tracking
 
 #### New Method: `substituteHaBridgeIntensity()`
+
 Complete implementation of ha-bridge intensity replacement patterns:
 
 ```typescript
 private substituteHaBridgeIntensity(text: string, currentIntensity: number, previousIntensity: number): string
 ```
 
-| Pattern | Description | Range | Example (75%) |
-|---------|-------------|-------|---------------|
-| `${intensity.percent}` | Percentage | 0-100 | 75 |
-| `${intensity.decimal_percent}` | Decimal | 0.00-1.00 | 0.75 |
-| `${intensity.byte}` | Byte value | 0-254 | 191 |
-| `${intensity.percent.hex}` | Hex percentage | 00-64 | 4b |
-| `${intensity.byte.hex}` | Hex byte | 00-fe | bf |
-| `${intensity.previous_percent}` | Previous percentage | 0-100 | 50 |
-| `${intensity.previous_decimal_percent}` | Previous decimal | 0.00-1.00 | 0.50 |
-| `${intensity.previous_byte}` | Previous byte | 0-254 | 127 |
-| `${intensity.math(floor\|ceil\|round\|abs\|sqrt)}` | Math functions | Varies | 8 |
-| `${intensity.math(X).hex}` | Math with hex output | Varies | 8 |
+| Pattern                                            | Description          | Range     | Example (75%) |
+| -------------------------------------------------- | -------------------- | --------- | ------------- |
+| `${intensity.percent}`                             | Percentage           | 0-100     | 75            |
+| `${intensity.decimal_percent}`                     | Decimal              | 0.00-1.00 | 0.75          |
+| `${intensity.byte}`                                | Byte value           | 0-254     | 191           |
+| `${intensity.percent.hex}`                         | Hex percentage       | 00-64     | 4b            |
+| `${intensity.byte.hex}`                            | Hex byte             | 00-fe     | bf            |
+| `${intensity.previous_percent}`                    | Previous percentage  | 0-100     | 50            |
+| `${intensity.previous_decimal_percent}`            | Previous decimal     | 0.00-1.00 | 0.50          |
+| `${intensity.previous_byte}`                       | Previous byte        | 0-254     | 127           |
+| `${intensity.math(floor\|ceil\|round\|abs\|sqrt)}` | Math functions       | Varies    | 8             |
+| `${intensity.math(X).hex}`                         | Math with hex output | Varies    | 8             |
 
 #### Updated Method: `executeHttpRequest()`
+
 Enhanced signature to accept optional intensity parameter:
 
 ```typescript
 private async executeHttpRequest(
-  deviceName: string, 
-  endpoint: HttpEndpoint, 
+  deviceName: string,
+  endpoint: HttpEndpoint,
   params: Record<string, string | number | boolean>,
   intensity?: number  // New parameter for ha-bridge replacements
 ): Promise<void>
 ```
 
 **New functionality:**
+
 1. Retrieves previous intensity from `deviceIntensity` map
 2. Applies intensity replacements to URL
 3. Applies intensity replacements to all string parameter values
@@ -55,6 +59,7 @@ private async executeHttpRequest(
 All brightness-related command handlers updated to pass intensity:
 
 #### Updated Handlers:
+
 - `addBrightnessHandlers()` - Passes `level` (0-254) as intensity
 - `addColorTemperatureHandlers()` - Passes current level as intensity
 - `addColorHandlers()` - Passes current level for hue/saturation
@@ -64,7 +69,9 @@ All brightness-related command handlers updated to pass intensity:
 ### 3. Documentation
 
 #### New File: `HA_BRIDGE_INTENSITY_REFERENCE.md`
+
 Comprehensive 500+ line reference guide including:
+
 - Quick reference table with all patterns
 - Detailed explanation of each replacement
 - 7+ real-world integration examples
@@ -76,17 +83,20 @@ Comprehensive 500+ line reference guide including:
 #### Updated Files:
 
 **`CONFIGURATION_GUIDE.md`**
+
 - Added complete "ha-bridge Intensity Replacements" section
 - Included all pattern documentation
 - Added 5 practical use case examples
 - Explained standard vs ha-bridge format
 
 **`QUICK_REFERENCE.md`**
+
 - Added "ha-bridge Intensity Replacements (Advanced)" section
 - 5 ready-to-use configuration examples
 - Links to full reference documentation
 
 **`README.md`**
+
 - Updated Features list to mention ha-bridge intensity replacements
 - Added ha-bridge Intensity Reference to Quick Start links
 
@@ -116,17 +126,18 @@ Send HTTP request with substituted values
 
 ### Supported Conversions
 
-| Format | Range | Calculation | Example (75%) |
-|--------|-------|-------------|---------------|
-| Percent | 0-100 | Round((level/254)*100) | 75 |
-| Decimal | 0.00-1.00 | level/254 (2 decimals) | 0.75 |
-| Byte | 0-254 | Direct value | 191 |
-| Percent Hex | 00-64 | Percent as hex | 4b |
-| Byte Hex | 00-fe | Byte as hex | bf |
+| Format      | Range     | Calculation             | Example (75%) |
+| ----------- | --------- | ----------------------- | ------------- |
+| Percent     | 0-100     | Round((level/254)\*100) | 75            |
+| Decimal     | 0.00-1.00 | level/254 (2 decimals)  | 0.75          |
+| Byte        | 0-254     | Direct value            | 191           |
+| Percent Hex | 00-64     | Percent as hex          | 4b            |
+| Byte Hex    | 00-fe     | Byte as hex             | bf            |
 
 ### Math Functions
 
 All math functions operate on intensity value:
+
 - `floor()` - Rounds down
 - `ceil()` - Rounds up
 - `round()` - Rounds to nearest
@@ -200,17 +211,20 @@ All support `.hex` suffix for hexadecimal output.
 ## Technical Specifications
 
 ### Performance
+
 - Regex-based pattern replacement (fast)
 - Minimal memory overhead (one Map per platform)
 - No additional HTTP requests
 - Calculations happen locally
 
 ### Error Handling
+
 - Invalid patterns are left unchanged
 - Missing intensity values default to 0
 - All operations are safe and non-blocking
 
 ### Type Safety
+
 - TypeScript interfaces updated
 - Proper typing for all parameters
 - Optional intensity parameter with defaults
@@ -220,6 +234,7 @@ All support `.hex` suffix for hexadecimal output.
 ### Test Endpoints
 
 Enable testing with:
+
 ```json
 {
   "test": true,
@@ -246,21 +261,27 @@ curl "http://device.local/fade?from=50&to=75"
 ## Integration Scenarios
 
 ### 1. Device with Percentage API
+
 Use: `${intensity.percent}` (0-100)
 
 ### 2. PWM Controller
+
 Use: `${intensity.byte}` (0-254)
 
 ### 3. ha-bridge Compatible System
+
 Use: Full set of ha-bridge patterns
 
 ### 4. Legacy Hex Protocol
+
 Use: `${intensity.byte.hex}` or `${intensity.percent.hex}`
 
 ### 5. Transition/Fade Support
+
 Use: Previous values + current values
 
 ### 6. Complex Math-based Control
+
 Use: `${intensity.math(sqrt)}`, `${intensity.math(round)}`, etc.
 
 ## Compatibility
@@ -280,6 +301,7 @@ Use: `${intensity.math(sqrt)}`, `${intensity.math(round)}`, etc.
 ## Summary
 
 The ha-bridge intensity replacement implementation provides:
+
 - ✅ Full compatibility with ha-bridge intensity patterns
 - ✅ Advanced brightness calculation support
 - ✅ Previous value tracking for transitions

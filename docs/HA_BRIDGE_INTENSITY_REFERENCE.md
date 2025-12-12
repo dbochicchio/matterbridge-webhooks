@@ -1,29 +1,29 @@
-# ha-bridge Intensity Replacement Reference
+# Brightness Control Patterns
 
-This guide provides a complete reference for using ha-bridge intensity replacement patterns with the Matterbridge HTTP plugin.
+This guide shows you how to use brightness patterns in your device configurations.
 
-## Overview
+## What Are Brightness Patterns?
 
-The plugin now supports the complete set of **ha-bridge intensity replacements**, enabling advanced brightness handling for devices with complex requirements. These replacements work in both URLs and parameter values for all brightness-related endpoints.
+Brightness patterns automatically convert brightness levels to the format your API needs. For example, `${intensity.percent}` gives you 0-100, while `${intensity.byte}` gives you 0-254.
 
 ## Quick Reference Table
 
-| Replacement | Range | Example Value (75% brightness) | Use Case |
-|---|---|---|---|
-| `$${brightness}` ⭐ | 0-100 | `75` | Brightness alias (convenience) |
-| `${intensity.percent}` | 0-100 | `75` | Percentage-based APIs |
-| `${intensity.decimal_percent}` | 0.00-1.00 | `0.75` | Normalized brightness |
-| `${intensity.byte}` | 0-254 | `191` | PWM/8-bit control |
-| `${intensity.percent.hex}` | 00-64 | `4b` | Hex percentage |
-| `${intensity.byte.hex}` | 00-fe | `bf` | Hex brightness |
-| `${intensity.previous_percent}` | 0-100 | `50` | Transition tracking |
-| `${intensity.previous_decimal_percent}` | 0.00-1.00 | `0.50` | Previous state |
-| `${intensity.previous_byte}` | 0-254 | `127` | Previous byte |
-| `${intensity.math(floor)}` | varies | `75` | Floor calculation |
-| `${intensity.math(ceil)}` | varies | `75` | Ceiling calculation |
-| `${intensity.math(round)}` | varies | `75` | Rounding |
-| `${intensity.math(abs)}` | varies | `75` | Absolute value |
-| `${intensity.math(sqrt)}` | varies | `8.66` | Square root |
+| Replacement                             | Range     | Example Value (75% brightness) | Use Case                       |
+| --------------------------------------- | --------- | ------------------------------ | ------------------------------ |
+| `$${brightness}` ⭐                     | 0-100     | `75`                           | Brightness alias (convenience) |
+| `${intensity.percent}`                  | 0-100     | `75`                           | Percentage-based APIs          |
+| `${intensity.decimal_percent}`          | 0.00-1.00 | `0.75`                         | Normalized brightness          |
+| `${intensity.byte}`                     | 0-254     | `191`                          | PWM/8-bit control              |
+| `${intensity.percent.hex}`              | 00-64     | `4b`                           | Hex percentage                 |
+| `${intensity.byte.hex}`                 | 00-fe     | `bf`                           | Hex brightness                 |
+| `${intensity.previous_percent}`         | 0-100     | `50`                           | Transition tracking            |
+| `${intensity.previous_decimal_percent}` | 0.00-1.00 | `0.50`                         | Previous state                 |
+| `${intensity.previous_byte}`            | 0-254     | `127`                          | Previous byte                  |
+| `${intensity.math(floor)}`              | varies    | `75`                           | Floor calculation              |
+| `${intensity.math(ceil)}`               | varies    | `75`                           | Ceiling calculation            |
+| `${intensity.math(round)}`              | varies    | `75`                           | Rounding                       |
+| `${intensity.math(abs)}`                | varies    | `75`                           | Absolute value                 |
+| `${intensity.math(sqrt)}`               | varies    | `8.66`                         | Square root                    |
 
 All math functions support `.hex` suffix (e.g., `${intensity.math(floor).hex}`)
 
@@ -33,7 +33,7 @@ All math functions support `.hex` suffix (e.g., `${intensity.math(floor).hex}`)
 
 The Matterbridge HTTP plugin supports multiple placeholder formats:
 
-- **Standard format** (backward compatible): `${brightness}` 
+- **Standard format** (backward compatible): `${brightness}`
 - **ha-bridge format** (new): `${intensity.*}`, `$${brightness}`, `${color.*}`, `${time.millis}`
 
 Both formats can be used together in the same configuration:
@@ -56,6 +56,7 @@ Both formats can be used together in the same configuration:
 These represent the current brightness level being set:
 
 #### `$${brightness}` - Brightness Percentage Alias ⭐
+
 - **Range**: 0 to 100
 - **Format**: Whole number integer
 - **Equivalent to**: `${intensity.percent}`
@@ -74,6 +75,7 @@ These represent the current brightness level being set:
 ```
 
 #### `${intensity.percent}` - Percentage (0-100)
+
 - **Range**: 0 to 100
 - **Format**: Whole number integer
 - **Use**: Most device APIs expect percentages
@@ -89,6 +91,7 @@ These represent the current brightness level being set:
 ```
 
 #### `${intensity.decimal_percent}` - Decimal Percentage (0.00-1.00)
+
 - **Range**: 0.00 to 1.00
 - **Format**: Two decimal places
 - **Use**: Normalized APIs (MQTT, some REST endpoints)
@@ -107,6 +110,7 @@ These represent the current brightness level being set:
 ```
 
 #### `${intensity.byte}` - Byte Value (0-254)
+
 - **Range**: 0 to 254 (Matter standard)
 - **Format**: Whole number integer
 - **Use**: PWM drivers, digital controllers
@@ -122,6 +126,7 @@ These represent the current brightness level being set:
 ```
 
 #### `${intensity.percent.hex}` - Hex Percentage (00-64)
+
 - **Range**: 00 to 64 in hexadecimal
 - **Format**: Two-digit hex (lowercase)
 - **Use**: Hex-based APIs
@@ -137,6 +142,7 @@ These represent the current brightness level being set:
 ```
 
 #### `${intensity.byte.hex}` - Hex Byte (00-FE)
+
 - **Range**: 00 to fe in hexadecimal
 - **Format**: Two-digit hex (lowercase)
 - **Use**: Hex-based PWM or byte commands
@@ -154,11 +160,13 @@ These represent the current brightness level being set:
 ### Previous Intensity Values
 
 These represent the brightness level from the previous command. Useful for:
+
 - Creating smooth transitions
 - Detecting state changes
 - Comparing old vs new brightness
 
 #### `${intensity.previous_percent}` - Previous Percentage (0-100)
+
 - **Range**: 0 to 100
 - **Example**: If previous was 50%, → `50`
 
@@ -176,10 +184,12 @@ These represent the brightness level from the previous command. Useful for:
 ```
 
 #### `${intensity.previous_decimal_percent}` - Previous Decimal (0.00-1.00)
+
 - **Range**: 0.00 to 1.00
 - **Example**: If previous was 50%, → `0.50`
 
 #### `${intensity.previous_byte}` - Previous Byte (0-254)
+
 - **Range**: 0 to 254
 - **Example**: If previous was 50%, → `127`
 
@@ -188,6 +198,7 @@ These represent the brightness level from the previous command. Useful for:
 Apply mathematical operations to the current intensity:
 
 #### `${intensity.math(floor)}` - Floor Function
+
 - **Operation**: Rounds down to nearest integer
 - **Example**: 75.9% → `75`
 
@@ -201,22 +212,27 @@ Apply mathematical operations to the current intensity:
 ```
 
 #### `${intensity.math(ceil)}` - Ceiling Function
+
 - **Operation**: Rounds up to nearest integer
 - **Example**: 75.1% → `76`
 
 #### `${intensity.math(round)}` - Round Function
+
 - **Operation**: Rounds to nearest integer
 - **Example**: 75.4% → `75`, 75.6% → `76`
 
 #### `${intensity.math(abs)}` - Absolute Value
+
 - **Operation**: Always positive value
 - **Example**: 75% → `75` (always positive)
 
 #### `${intensity.math(sqrt)}` - Square Root
+
 - **Operation**: Square root of the value
 - **Example**: 75% → `8.66`
 
 #### Math Functions with Hex
+
 All math functions support `.hex` suffix:
 
 ```json
@@ -247,6 +263,7 @@ All math functions support `.hex` suffix:
 ```
 
 **When brightness is set to 75%:**
+
 - Request: `http://192.168.1.100/light?brightness=75`
 
 ### Example 2: PWM Control
@@ -270,6 +287,7 @@ All math functions support `.hex` suffix:
 ```
 
 **When brightness is set to 75%:**
+
 - Request body: `{"pin": "D5", "value": 191}`
 
 ### Example 3: Multiple Formats
@@ -295,6 +313,7 @@ All math functions support `.hex` suffix:
 ```
 
 **When brightness is set to 75%:**
+
 ```json
 {
   "percent": "75",
@@ -326,9 +345,11 @@ All math functions support `.hex` suffix:
 ```
 
 **First time (from 0% to 75%):**
+
 - `{"from": "0", "to": "75", "duration": 500}`
 
 **Second time (from 75% to 50%):**
+
 - `{"from": "75", "to": "50", "duration": 500}`
 
 ### Example 5: Logarithmic Dimming
@@ -348,6 +369,7 @@ All math functions support `.hex` suffix:
 ```
 
 **When brightness is set to 75%:**
+
 - Request: `http://192.168.1.170/log?brightness=8.66`
 
 ### Example 6: Hex-based Protocol
@@ -367,6 +389,7 @@ All math functions support `.hex` suffix:
 ```
 
 **When brightness is set to 75%:**
+
 - Request: `http://192.168.1.160/cmd?brightness_hex=bf`
 
 ### Example 7: Complex Calculation
@@ -396,23 +419,25 @@ All math functions support `.hex` suffix:
 
 If you need to convert between formats:
 
-| From | To | Formula | Example |
-|---|---|---|---|
-| Percent | Decimal | percent / 100 | 75 → 0.75 |
-| Percent | Byte | (percent / 100) * 254 | 75 → 191 |
-| Byte | Percent | (byte / 254) * 100 | 191 → 75 |
-| Percent | Hex | percent.toString(16) | 75 → 4b |
-| Byte | Hex | byte.toString(16) | 191 → bf |
+| From    | To      | Formula                | Example   |
+| ------- | ------- | ---------------------- | --------- |
+| Percent | Decimal | percent / 100          | 75 → 0.75 |
+| Percent | Byte    | (percent / 100) \* 254 | 75 → 191  |
+| Byte    | Percent | (byte / 254) \* 100    | 191 → 75  |
+| Percent | Hex     | percent.toString(16)   | 75 → 4b   |
+| Byte    | Hex     | byte.toString(16)      | 191 → bf  |
 
 ## Best Practices
 
 ### 1. Choose the Right Format
+
 - Use **percent** for human-readable APIs
 - Use **byte** for PWM or digital control
 - Use **decimal** for normalized/MQTT APIs
 - Use **hex** for legacy or binary protocols
 
 ### 2. Test Before Deploying
+
 ```json
 {
   "test": true,
@@ -424,12 +449,15 @@ If you need to convert between formats:
 ```
 
 ### 3. Handle Edge Cases
+
 - Test with brightness 0% (minimum)
 - Test with brightness 100% (maximum)
 - Test with brightness 50% (middle range)
 
 ### 4. Use Previous Values for Transitions
+
 When brightness is expected to transition smoothly:
+
 ```json
 {
   "params": {
@@ -441,7 +469,9 @@ When brightness is expected to transition smoothly:
 ```
 
 ### 5. Combine Multiple Formats
+
 If an API accepts multiple formats, send the most appropriate one:
+
 ```json
 {
   "params": {
@@ -454,22 +484,26 @@ If an API accepts multiple formats, send the most appropriate one:
 ## Troubleshooting
 
 ### Intensity replacements not working
+
 - Ensure you're using `${...}` (ha-bridge format), not `{...}` (standard format)
 - Check that the endpoint supports brightness control
 - Verify the device type is `DimmableLight` or similar
 
 ### Wrong values being sent
+
 - Check which format your device expects
 - Compare with manual API tests
 - Use percent for most cases (0-100)
 - Use byte for PWM (0-254)
 
 ### Math functions producing unexpected results
+
 - Math functions are applied to the intensity value
 - Floor/ceil/round may produce the same result for whole numbers
 - Sqrt of 75 ≈ 8.66 (correct, not an error)
 
 ### Previous value always zero
+
 - On first command, previous value is 0 (not set yet)
 - Use previous values for transitions between commands
 - Check device logs for actual values sent
@@ -484,14 +518,17 @@ If an API accepts multiple formats, send the most appropriate one:
 ## Examples by Device Type
 
 ### DimmableLight
+
 - Supports: percent, byte, decimal
 - Primary use: `${intensity.percent}` or `${intensity.byte}`
 
 ### ExtendedColorLight / ColorLightHS / ColorLightXY
+
 - Supports: percent, byte, decimal (for brightness)
 - Also uses: `${hue}`, `${saturation}`, `${colorX}`, `${colorY}` (standard format)
 
 ### CoverLift / CoverLiftTilt
+
 - Supports: percent, byte (for position/tilt)
 - Primary use: `${intensity.percent}` for 0-100% position
 

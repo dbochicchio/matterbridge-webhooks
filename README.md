@@ -19,15 +19,14 @@ This plugin allows you to expose HTTP-controlled devices to Matter by mapping th
 
 ## Features
 
-- **25+ Device Types** - Comprehensive support for switches, lights, sensors, thermostats, covers, locks, mode select, and mounted switches
-- **Advanced Light Control** - Full RGB/RGBW support with XY, HS color spaces and color temperature
-- **Sensor Polling** - Automatic polling for contact, motion, temperature, humidity, pressure, and illuminance sensors with flexible JSON path extraction
-- **Poll Templates** - MQTT Controller-style JSON path extraction for complex API responses (e.g., `sensors.temperature` or `data.values[0].temp`)
-- **Per-device Configuration** - Each device can have its own type and endpoints
-- **Flexible HTTP Endpoints** - Separate endpoints for different actions (on/off, brightness, color, position, etc.)
-- **Multiple HTTP Methods** - GET, POST, and PUT support
-- **Dynamic Parameters** - URL placeholder substitution (e.g., `${brightness}`, `${hue}`, `${temperature}`)
-- **ha-bridge Intensity Replacements** - Advanced brightness patterns (`${intensity.percent}`, `${intensity.byte}`, `${intensity.math()}`, etc.)
+- **26+ Device Types** - Switches, lights, sensors, covers, locks, thermostats, and more
+- **Flexible Brightness Control** - Use percentages (0-100) or byte values (0-254), with support for transitions and math operations
+- **Full Color Support** - RGB, HSB, XY color space, and color temperature for any light
+- **Sensor Polling** - Temperature, humidity, motion, contact, and other sensors that automatically update
+- **Easy Configuration** - Simple JSON configuration with sensible defaults
+- **Multiple Commands** - Run multiple API calls in sequence for complex actions
+- **HTTP Methods** - GET, POST, and PUT support
+- **Placeholder Support** - Automatic value substitution like `${brightness}` and `${hue}`
 - **ha-bridge Color Replacements** - Advanced color patterns (`${color.r}`, `${color.g}`, `${color.b}`, `${color.rgbx}`, `${color.hsb}`, etc.) with HSV-to-RGB conversion
 - **Time Tracking** - Include timestamps in requests (`${time.millis}`)
 - **Brightness Alias** - Convenient `${brightness}` placeholder for quick access
