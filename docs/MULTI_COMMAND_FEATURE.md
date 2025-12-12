@@ -132,7 +132,7 @@ This method handles:
 {
   "brightness": {
     "method": "GET",
-    "url": "http://device/brightness?value=$${brightness}"
+    "url": "http://device/brightness?value=${brightness}"
   }
 }
 ```

@@ -47,7 +47,8 @@ Your complete guide to configuring the Matterbridge Webhooks plugin with 26+ dev
 
 ### Reference Guides
 
-- **[HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)** - Technical reference for advanced users
+All the guides above contain complete reference information - no separate implementation guide needed.
+
 - **[HA_BRIDGE_IMPLEMENTATION.md](HA_BRIDGE_IMPLEMENTATION.md)** - Technical architecture (for developers)
 - **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - What changed from previous versions
 

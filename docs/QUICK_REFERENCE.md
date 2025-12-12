@@ -34,7 +34,7 @@
     },
     "brightness": {
       "method": "GET",
-      "url": "http://192.168.1.101/api?brightness=$${brightness}"
+      "url": "http://192.168.1.101/api?brightness=${brightness}"
     }
   }
 }
@@ -258,7 +258,7 @@
     },
     "brightness": {
       "method": "GET",
-      "url": "http://192.168.1.112/light/0?brightness=$${brightness}"
+      "url": "http://192.168.1.112/light/0?brightness=${brightness}"
     }
   }
 }
@@ -280,7 +280,7 @@
     },
     "brightness": {
       "method": "GET",
-      "url": "http://192.168.1.120/cm?cmnd=Dimmer%20$${brightness}"
+      "url": "http://192.168.1.120/cm?cmnd=Dimmer%20${brightness}"
     }
   }
 }
@@ -302,13 +302,13 @@
     },
     "brightness": {
       "method": "GET",
-      "url": "http://192.168.1.130/led?pwm=$${brightness}"
+      "url": "http://192.168.1.130/led?pwm=${brightness}"
     }
   }
 }
 ```
 
-## ha-bridge Intensity Replacements (Advanced)
+## Brightness Control Patterns (Advanced)
 
 ### PWM with Byte Value
 
@@ -399,9 +399,9 @@
 
 **When brightness is set to 75%:** `http://192.168.1.204/set?brightness=8.66`
 
-For complete ha-bridge intensity documentation, see **[ha-bridge Intensity Reference](HA_BRIDGE_INTENSITY_REFERENCE.md)**
+For complete brightness pattern documentation, see **[Brightness Control Patterns](HA_BRIDGE_INTENSITY_REFERENCE.md)**
 
-## ha-bridge Color Replacements (Advanced)
+## Color Control Patterns (Advanced)
 
 ### RGB Color with Separate Channels
 
@@ -483,7 +483,7 @@ For complete ha-bridge intensity documentation, see **[ha-bridge Intensity Refer
       "url": "http://192.168.1.303/api",
       "params": {
         "hex": "${color.rgbx}",
-        "brightness": "$${brightness}",
+        "brightness": "${brightness}",
         "hue": "${color.h}",
         "saturation": "${color.s}",
         "timestamp": "${time.millis}"
@@ -505,7 +505,7 @@ For complete ha-bridge intensity documentation, see **[ha-bridge Intensity Refer
 }
 ```
 
-For complete ha-bridge color documentation, see **[ha-bridge Color Reference](HA_BRIDGE_COLOR_REFERENCE.md)**
+For complete color pattern documentation, see **[Color Control Patterns](HA_BRIDGE_COLOR_REFERENCE.md)**
 
 ## Color Value Reference
 
@@ -609,12 +609,11 @@ Execute multiple HTTP requests sequentially for a single action:
 4. **Use HTTPS** if your devices support it for security
 5. **Placeholder formats**:
    - **Standard format** (backward compatible):
-   - `$${brightness}` = 0-100 (percentage)
-   - `$${level}` = 0-254 (Matter standard)
-   - **ha-bridge format** (advanced):
+   - `${brightness}` = 0-100 (percentage)
+   - `${level}` = 0-254 (Matter standard)
+   - **Intensity format** (advanced):
      - `${intensity.*}` = intensity replacements (13 patterns)
      - `${color.*}` = color replacements (11 patterns)
-     - `$${brightness}` = brightness alias for `${intensity.percent}`
      - `${time.millis}` = current time in milliseconds
    - Both formats can be used together in the same configuration
 6. **Method selection**:
@@ -622,8 +621,8 @@ Execute multiple HTTP requests sequentially for a single action:
    - Use POST/PUT for JSON-based APIs
 7. **Scenes** automatically turn off - perfect for triggers
 8. **Parameters** in GET become query strings, in POST/PUT become JSON body
-9. **Advanced brightness support** - Use `${intensity.*}` patterns for specialized brightness handling (see [ha-bridge Intensity Reference](HA_BRIDGE_INTENSITY_REFERENCE.md))
-10. **Color support** - Use `${color.*}` patterns for RGB/HSB color handling (see [ha-bridge Color Reference](HA_BRIDGE_COLOR_REFERENCE.md))
+9. **Advanced brightness support** - Use `${intensity.*}` patterns for specialized brightness handling (see [Brightness Control Patterns](HA_BRIDGE_INTENSITY_REFERENCE.md))
+10. **Color support** - Use `${color.*}` patterns for RGB/HSB color handling (see [Color Control Patterns](HA_BRIDGE_COLOR_REFERENCE.md))
 11. **Timeouts** - Set per device or globally (default 5 seconds) for slow APIs
 
 ## Configuring Request Timeout

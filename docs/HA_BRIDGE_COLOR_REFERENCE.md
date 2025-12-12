@@ -2,6 +2,8 @@
 
 This guide shows you how to use color patterns in your device configurations.
 
+> **Note**: For information about placeholder format (standard vs advanced), brightness alias (`${brightness}`), and time replacement (`${time.millis}`), see [Brightness Control Patterns](HA_BRIDGE_INTENSITY_REFERENCE.md#placeholder-format).
+
 ## What Are Color Patterns?
 
 Color patterns automatically convert the device's color into the format your API needs. For example, `${color.r}` gives you the red value, `${color.rgbx}` gives you the full RGB hex color.
@@ -21,21 +23,6 @@ Color patterns automatically convert the device's color into the format your API
 | `${color.h}`    | 0-360 (degrees) | `0`                         | Hue in degrees        |
 | `${color.s}`    | 0-100 (percent) | `100`                       | Saturation percentage |
 | `${color.b}`    | 0-100 (percent) | `100`                       | Brightness percentage |
-
-## Time Replacement
-
-| Replacement      | Format       | Example Value   | Use Case                          |
-| ---------------- | ------------ | --------------- | --------------------------------- |
-| `${time.millis}` | milliseconds | `1699564234567` | Current Unix time in milliseconds |
-
-## Placeholder Format
-
-The Matterbridge HTTP plugin supports multiple placeholder formats:
-
-- **Standard format**: `${brightness}` (backward compatible)
-- **ha-bridge format**: `${intensity.*}`, `${color.*}`, `${time.*}` (new)
-
-Both formats can be used together in the same configuration.
 
 ## Color Replacements - Detailed Reference
 
@@ -224,7 +211,7 @@ These provide RGB color values as lowercase hexadecimal strings, useful for hex-
 
 - **Range**: 0 to 100
 - **Format**: Whole number integer (percentage)
-- **Note**: Also available as `$${brightness}` for convenience
+- **Note**: Also available as `${brightness}` for convenience
 - **Use**: APIs that accept brightness as percentage
 - **Example**: Full brightness → `100`
 - **Example**: Half brightness → `50`
@@ -237,53 +224,6 @@ These provide RGB color values as lowercase hexadecimal strings, useful for hex-
     "brightness": {
       "method": "GET",
       "url": "http://device.local/brightness?value=${color.b}"
-    }
-  }
-}
-```
-
-## Time Replacement
-
-#### `${time.millis}` - Current Time in Milliseconds
-
-- **Format**: Milliseconds since Unix epoch (JavaScript/TypeScript style)
-- **Use**: Timestamped color changes, API rate limiting, logging
-- **Example**: `1699564234567`
-
-```json
-{
-  "colorLight": {
-    "deviceType": "ColorLight",
-    "color": {
-      "method": "POST",
-      "url": "http://device.local/api",
-      "params": {
-        "color": "${color.rgbx}",
-        "timestamp": "${time.millis}",
-        "brightness": "$${brightness}"
-      }
-    }
-  }
-}
-```
-
-## Brightness Alias
-
-#### `$${brightness}` - Brightness Percentage (Alias)
-
-- **Equivalent to**: `${color.b}` or `${intensity.percent}`
-- **Range**: 0 to 100
-- **Format**: Whole number integer
-- **Use**: Convenience placeholder for brightness
-- **Backward Compatibility**: Also works with standard format `${brightness}`
-
-```json
-{
-  "colorLight": {
-    "deviceType": "ColorLight",
-    "brightness": {
-      "method": "GET",
-      "url": "http://device.local/brightness?value=$${brightness}"
     }
   }
 }
@@ -307,7 +247,7 @@ These provide RGB color values as lowercase hexadecimal strings, useful for hex-
     },
     "brightness": {
       "method": "GET",
-      "url": "http://192.168.1.100/brightness?value=$${brightness}"
+      "url": "http://192.168.1.100/brightness?value=${brightness}"
     },
     "color": {
       "method": "POST",
@@ -395,7 +335,7 @@ These provide RGB color values as lowercase hexadecimal strings, useful for hex-
         "hex": "${color.rgbx}",
         "hue": "${color.h}",
         "saturation": "${color.s}",
-        "brightness": "$${brightness}",
+        "brightness_percent": "${brightness}",
         "timestamp": "${time.millis}"
       }
     }
@@ -448,7 +388,7 @@ You can use intensity replacements together with color replacements:
       "url": "http://device.local/api",
       "params": {
         "color": "${color.rgbx}",
-        "brightness_percent": "$${brightness}",
+        "brightness": "${brightness}",
         "brightness_byte": "${intensity.byte}",
         "brightness_decimal": "${intensity.decimal_percent}",
         "timestamp": "${time.millis}"
@@ -475,4 +415,3 @@ You can use intensity replacements together with color replacements:
 ## See Also
 
 - [Intensity Replacements](HA_BRIDGE_INTENSITY_REFERENCE.md) - For brightness-only devices
-- [Implementation Guide](HA_BRIDGE_IMPLEMENTATION.md) - For technical details

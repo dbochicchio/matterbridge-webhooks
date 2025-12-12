@@ -27,7 +27,7 @@ This plugin allows you to expose HTTP-controlled devices to Matter by mapping th
 - **Multiple Commands** - Run multiple API calls in sequence for complex actions
 - **HTTP Methods** - GET, POST, and PUT support
 - **Placeholder Support** - Automatic value substitution like `${brightness}` and `${hue}`
-- **ha-bridge Color Replacements** - Advanced color patterns (`${color.r}`, `${color.g}`, `${color.b}`, `${color.rgbx}`, `${color.hsb}`, etc.) with HSV-to-RGB conversion
+- **Color Replacements** - Advanced color patterns (`${color.r}`, `${color.g}`, `${color.b}`, `${color.rgbx}`, `${color.hsb}`, etc.) with HSV-to-RGB conversion
 - **Time Tracking** - Include timestamps in requests (`${time.millis}`)
 - **Brightness Alias** - Convenient `${brightness}` placeholder for quick access
 - **Multiple Commands Per Endpoint** - Execute sequential commands for complex device control
@@ -94,8 +94,8 @@ This plugin allows you to expose HTTP-controlled devices to Matter by mapping th
 📘 **[Device Types Reference](docs/DEVICE_TYPES.md)** - Complete guide to all 25+ device types  
 ⚡ **[Quick Reference](docs/QUICK_REFERENCE.md)** - Common device configurations  
 🔄 **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Changes and upgrade information  
-🌉 **[ha-bridge Intensity Reference](docs/HA_BRIDGE_INTENSITY_REFERENCE.md)** - Advanced ha-bridge intensity replacement patterns  
-🎨 **[ha-bridge Color Reference](docs/HA_BRIDGE_COLOR_REFERENCE.md)** - Advanced ha-bridge color replacement patterns  
+🌉 **[Brightness Control Patterns](docs/HA_BRIDGE_INTENSITY_REFERENCE.md)** - Advanced brightness replacement patterns  
+🎨 **[Color Control Patterns](docs/HA_BRIDGE_COLOR_REFERENCE.md)** - Advanced color replacement patterns  
 📊 **[Poll Templates Guide](docs/POLL_TEMPLATES.md)** - JSON path extraction for sensor polling
 
 If you like this project and find it useful, please consider giving it a star on GitHub at https://github.com/Luligu/matterbridge-webhooks and sponsoring it.

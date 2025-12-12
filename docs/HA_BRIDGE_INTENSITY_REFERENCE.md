@@ -10,7 +10,7 @@ Brightness patterns automatically convert brightness levels to the format your A
 
 | Replacement                             | Range     | Example Value (75% brightness) | Use Case                       |
 | --------------------------------------- | --------- | ------------------------------ | ------------------------------ |
-| `$${brightness}` ⭐                     | 0-100     | `75`                           | Brightness alias (convenience) |
+| `${brightness}`                         | 0-100     | `75`                           | Brightness alias (convenience) |
 | `${intensity.percent}`                  | 0-100     | `75`                           | Percentage-based APIs          |
 | `${intensity.decimal_percent}`          | 0.00-1.00 | `0.75`                         | Normalized brightness          |
 | `${intensity.byte}`                     | 0-254     | `191`                          | PWM/8-bit control              |
@@ -27,14 +27,12 @@ Brightness patterns automatically convert brightness levels to the format your A
 
 All math functions support `.hex` suffix (e.g., `${intensity.math(floor).hex}`)
 
-⭐ **NEW**: `$${brightness}` is a convenient alias for `${intensity.percent}` - use it for cleaner, shorter config
-
 ## Placeholder Format
 
-The Matterbridge HTTP plugin supports multiple placeholder formats:
+The plugin supports multiple brightness placeholder formats:
 
 - **Standard format** (backward compatible): `${brightness}`
-- **ha-bridge format** (new): `${intensity.*}`, `$${brightness}`, `${color.*}`, `${time.millis}`
+- **Intensity format**: `${intensity.*}`, `${brightness}`, `${color.*}`, `${time.millis}`
 
 Both formats can be used together in the same configuration:
 
@@ -43,7 +41,7 @@ Both formats can be used together in the same configuration:
   "Light": {
     "brightness": {
       "method": "GET",
-      "url": "http://device.local/brightness?old_format=${brightness}&new_format=$${brightness}&byte=${intensity.byte}"
+      "url": "http://device.local/brightness?old_format=${brightness}&new_format=${brightness}&byte=${intensity.byte}"
     }
   }
 }
@@ -55,7 +53,7 @@ Both formats can be used together in the same configuration:
 
 These represent the current brightness level being set:
 
-#### `$${brightness}` - Brightness Percentage Alias ⭐
+#### `${brightness}` - Brightness Percentage Alias
 
 - **Range**: 0 to 100
 - **Format**: Whole number integer
@@ -68,7 +66,7 @@ These represent the current brightness level being set:
   "Light": {
     "brightness": {
       "method": "GET",
-      "url": "http://device.local/brightness?value=$${brightness}"
+      "url": "http://device.local/brightness?value=${brightness}"
     }
   }
 }
@@ -485,7 +483,7 @@ If an API accepts multiple formats, send the most appropriate one:
 
 ### Intensity replacements not working
 
-- Ensure you're using `${...}` (ha-bridge format), not `{...}` (standard format)
+- Ensure you're using `${...}` (intensity format), not `{...}` (standard format)
 - Check that the endpoint supports brightness control
 - Verify the device type is `DimmableLight` or similar
 
@@ -510,7 +508,7 @@ If an API accepts multiple formats, send the most appropriate one:
 
 ## Compatibility
 
-- **ha-bridge compatible**: Uses standard ha-bridge intensity syntax
+- **Fully supported**: All brightness replacement patterns
 - **Works with**: All HTTP methods (GET, POST, PUT)
 - **Works in**: URLs and parameter values
 - **Device Types**: All brightness-related endpoints
@@ -534,6 +532,5 @@ If an API accepts multiple formats, send the most appropriate one:
 
 ## References
 
-- [ha-bridge Documentation](https://github.com/bwssytems/ha-bridge)
-- [Matter Specification](https://csa-iot.org/csa_iot_wp-content/uploads/2022/01/Matter-Core-Specification-v1.0-TIP.pdf)
 - [Matterbridge Documentation](https://github.com/Luligu/matterbridge)
+- [Matter Specification](https://csa-iot.org/csa_iot_wp-content/uploads/2022/01/Matter-Core-Specification-v1.0-TIP.pdf)
