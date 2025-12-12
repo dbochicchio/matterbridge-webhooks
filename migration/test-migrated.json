@@ -1,0 +1,1314 @@
+{
+  "name": "matterbridge-webhooks",
+  "type": "DynamicPlatform",
+  "version": "1.0.0",
+  "whiteList": [],
+  "blackList": [],
+  "timeout": 5000,
+  "webhooks": {
+    "Luce cucina": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-7819ea00",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_cucina/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_cucina/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_cucina/perform/rgb_color.set_rgb?r=${color.r}&g=${color.g}&b=${color.b}"
+      }
+    },
+    "Deebot notte": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-2c694587",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>vacuum_deebotnotte/perform/vacuum.start"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>vacuum_deebotnotte/perform/x_hass_vacuum.return_to_base"
+      }
+    },
+    "Deebot Giorno": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-1ddb9243",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>vacuum_deebotgiorno/perform/vacuum.start"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>vacuum_deebotgiorno/perform/x_hass_vacuum.return_to_base"
+      }
+    },
+    "Videosorveglianza": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-65da1fae",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/kiosk/cmd?c=cams"
+      }
+    },
+    "Camino": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-77debddb",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=Alexa-Pellet-On"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=Alexa-Pellet-Off"
+      }
+    },
+    "Arco di Flos": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-5f2b7762",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E78-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E78-1/perform/power_switch.off"
+      }
+    },
+    "Luce piscina": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-2738ddde",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/rgb_color.set_rgb?r=${color.r}&g=${color.g}&b=${color.b}"
+      }
+    },
+    "Tenda Vetrata sinistra": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-ecd923e6",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E3-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E3-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E3-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Tapparella Matteo": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-b9eabe24",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E35-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E35-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E35-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Deumidificatore camera da letto": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-306764d2",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt>tasmota_dehumidifier_switch/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt>tasmota_dehumidifier_switch/perform/power_switch.off"
+      }
+    },
+    "Bagno giorno": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-c2916b1d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E66-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E66-2/perform/power_switch.off"
+      }
+    },
+    "Distributore antenna": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-a022b9e1",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E136-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E136-0/perform/power_switch.off"
+      }
+    },
+    "Esterno ingresso": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-845af966",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E70-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E70-1/perform/power_switch.off"
+      }
+    },
+    "Esterno Ponte": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-6afd9f54",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E82-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E82-1/perform/power_switch.off"
+      }
+    },
+    "Esterno Retro": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-6b1558f2",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E165-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E165-1/perform/power_switch.off"
+      }
+    },
+    "camera centrale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-1f33982b",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E72-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E72-1/perform/power_switch.off"
+      }
+    },
+    "Tapparella scale": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-7bb45544",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E10-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E10-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E10-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "piantana": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-d0bc51c6",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E72-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E72-2/perform/power_switch.off"
+      }
+    },
+    "Bagno notte": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-69c4f94d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E74-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E74-1/perform/power_switch.off"
+      }
+    },
+    "Ufficio Centrale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-d5ee585b",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E65-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E65-1/perform/power_switch.off"
+      }
+    },
+    "Tavernetta Cucina": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-0ce4e937",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E81-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E81-2/perform/power_switch.off"
+      }
+    },
+    "Ufficio NYC": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-a233be4d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E65-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E65-2/perform/power_switch.off"
+      }
+    },
+    "BusyLight Ufficio": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-8eedca72",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Ebusylight/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Ebusylight/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Ebusylight/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Presa Albero di Natale": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-eef90bce",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E87-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E87-2/perform/power_switch.off"
+      }
+    },
+    "Cabina armadio": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-7614aa7d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E75-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E75-1/perform/power_switch.off"
+      }
+    },
+    "Zona TV": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-5c9575da",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E87-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E87-1/perform/power_switch.off"
+      }
+    },
+    "Camera di Ale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-cd02c09a",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E76-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E76-1/perform/power_switch.off"
+      }
+    },
+    "Esterno Scale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-6b223f9e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E82-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E82-2/perform/power_switch.off"
+      }
+    },
+    "Camera di Teo": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-cd03071e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E76-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E76-2/perform/power_switch.off"
+      }
+    },
+    "Salotto": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-d2516bde",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E78-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E78-2/perform/power_switch.off"
+      }
+    },
+    "Esterno Terrazzo": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-358dce4b",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E85-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E85-1/perform/power_switch.off"
+      }
+    },
+    "Televisione LG Salotto": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-5d8bd606",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/lgtv/on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/lgtv/off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/lgtv/cmd?c=volume&v=${intensity.percent}"
+      }
+    },
+    "Letto Daniele": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-ffa35a1c",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E73-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E73-2/perform/power_switch.off"
+      }
+    },
+    "Letto Noemi": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-00d74056",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E73-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E73-1/perform/power_switch.off"
+      }
+    },
+    "Tapparella bagno": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-7ac3f3c3",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E8-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E8-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E8-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Corridoio": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-2f91228e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E66-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E66-1/perform/power_switch.off"
+      }
+    },
+    "Giardino Retro Muro": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-f86634ae",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E89-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E89-2/perform/power_switch.off"
+      }
+    },
+    "Sala da pranzo": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-76bd3eaa",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E68-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E68-2/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E68-2/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Giardino Acero": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-ba1c1f39",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_destra/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_destra/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_destra/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Giardino Colorate Destra": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-e83ae75b",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_centrale/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_centrale/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_centrale/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Giardino Colorate Sinistra": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-a5c696eb",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_sinistra/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_sinistra/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_rgb_giardino_sinistra/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Ingresso": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-105c887a",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E70-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E70-2/perform/power_switch.off"
+      }
+    },
+    "Luce Lavanderia": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-2c0177b0",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E80-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E80-2/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E80-2/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Party mode": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-8feacabd",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Ehouse_partymode/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Ehouse_partymode/perform/power_switch.off"
+      }
+    },
+    "Giardino Palmeto": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-ba054427",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E89-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E89-1/perform/power_switch.off"
+      }
+    },
+    "Luce scale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-911c28b5",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E71-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E71-1/perform/power_switch.off"
+      }
+    },
+    "Tapparella camera 1": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-cace0bbc",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E5-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E5-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E5-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Presa Giardino": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-fdb98768",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E86-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E86-1/perform/power_switch.off"
+      }
+    },
+    "condizionatore zona giorno": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-c50edeb8",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_ac_giorno/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_ac_giorno/perform/power_switch.off"
+      }
+    },
+    "SCENA - Tende Sole - OS - UP": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-c89d55b9",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=SunScreens-OpenSpace-Up"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=SunScreens-OpenSpace-Up"
+      }
+    },
+    "SCENA - Piscina Temperatura": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-5e9c4398",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/announcepooltemperature"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/announcepooltemperature"
+      }
+    },
+    "SCENA - Alexa - Consumo": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-d1658d4b",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/alexawattsreport"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/alexawattsreport"
+      }
+    },
+    "SCENA - Stato Asciugatrice": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-a6eeafe6",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/appliancestatus?id=dbdomoticz%3Easciugatrice"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/appliancestatus?id=dbdomoticz%3Easciugatrice"
+      }
+    },
+    "SCENA - Stato Lavatrice": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-44341f3d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/appliancestatus?id=dbdomoticz%3Elavatrice"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/appliancestatus?id=dbdomoticz%3Elavatrice"
+      }
+    },
+    "Scale Tavernetta": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-9b8f394a",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E165-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E165-2/perform/power_switch.off"
+      }
+    },
+    "Tenda Ufficio Finestra": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-6b2cf9fb",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E148-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E148-1/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E148-1/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Aspiratore": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-8e6b4e28",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E80-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E80-1/perform/power_switch.off"
+      }
+    },
+    "SCENA - Prossima sveglia": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-3c334f3a",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=Alexa-Alarms-Next"
+      }
+    },
+    "Frangisole Matteo": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-366facee",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E139-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E139-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E139-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Tenda Ufficio Grande": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-6afb520a",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E147-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E147-1/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E147-1/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Presa Terrazzo": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-8d91286e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E85-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E85-2/perform/power_switch.off"
+      }
+    },
+    "Tenda Ufficio Porta": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-fbaf1caf",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E146-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E146-1/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E146-1/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Cleopatra": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-437f6aff",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E71-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E71-2/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E71-2/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Presa TV Tavernetta": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-924c7723",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Eshelly_tvtavernetta/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Eshelly_tvtavernetta/perform/power_switch.off"
+      }
+    },
+    "Presa Mosquito": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-c916d6de",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Eshelly_plug_mosquito/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/mqtt%3Eshelly_plug_mosquito/perform/power_switch.off"
+      }
+    },
+    "Termostato Zona giorno": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-efa59316",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_giorno/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_giorno/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_giorno/perform/x_hass_climate.set_temperature?temperature=${intensity.percent}"
+      }
+    },
+    "Termostato Zona notte": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-83ff6e34",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_notte/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_notte/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_zona_notte/perform/x_hass_climate.set_temperature?temperature=${intensity.percent}"
+      }
+    },
+    "Termostato Lavanderia": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-cfcf1443",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_lavanderia/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_lavanderia/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Eclimate_lavanderia/perform/x_hass_climate.set_temperature?temperature=${intensity.percent}"
+      }
+    },
+    "SCENA - Alexa - Wallbox": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-db5eb106",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/wallbox"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/wallbox"
+      }
+    },
+    "SCENA - Luci Cinema": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-68b1af57",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=TV-Lights-OpenSpace-Alexa"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=TV-Lights-OpenSpace-Alexa"
+      }
+    },
+    "Deumidificatore salotto": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-956cc1c2",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>humidifier_144036023362053_humidifier/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass>humidifier_144036023362053_humidifier/perform/power_switch.off"
+      }
+    },
+    "Doccia in tavernetta": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-ddedc592",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/mqtt/publish?topic=reactor/mqtt/virtual/house_basement_showermode/perform/power_switch/on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/mqtt/publish?topic=reactor/mqtt/virtual/house_basement_showermode/perform/power_switch/off"
+      }
+    },
+    "SCENA - Tende Ufficio - Chiuse": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-f135212e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Office-Down"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Office-Down"
+      }
+    },
+    "SCENA - Privacy - Alexa": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-e99063cd",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Camera-Privacy-Alexa"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Camera-Privacy-Alexa"
+      }
+    },
+    "SCENA - Apertura tapparelle": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-9c9af647",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-All-Up-Season"
+      },
+      "off": {
+        "method": "GET",
+        "url": "[]"
+      }
+    },
+    "SCENA - Chiusura tapparelle totale": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-a6093c70",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-All-Down"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-All-Down"
+      }
+    },
+    "Festoon Piscina": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-be0bd601",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E60-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E60-1/perform/power_switch.off"
+      }
+    },
+    "SCENA - Tende Ufficio - Comfort": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-41927061",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Office-Up"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-Office-Up"
+      }
+    },
+    "Frangisole Alessio": {
+      "deviceType": "DimmableLight",
+      "uniqueId": "webhook-2eacd7f0",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E2-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E2-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E2-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "SCENA - Apertura tapparelle - totale": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-77e6e2ad",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-All-Up"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=RollerShutters-All-Up"
+      }
+    },
+    "Luce scrivania": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-60077d3f",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_scrivania/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_scrivania/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_scrivania/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Luce call": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-a18e4193",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_call/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_call/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_call/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Luce stampante": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-c9305f8c",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_stampante/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_stampante/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_luce_stampante/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "Luce parete piscina": {
+      "deviceType": "ExtendedColorLight",
+      "uniqueId": "webhook-b7c6765d",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/power_switch.off"
+      },
+      "colorHue": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/hass%3Elight_pool_color/perform/rgb_color.set_rgb?red=${color.r}&green=${color.g}&blue=${color.b}"
+      }
+    },
+    "SCENA - Temperatura - Alexa": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-c9507b35",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/announcetemperature"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/announcetemperature"
+      }
+    },
+    "SCENA - Alexa - Sveglia SPENTA": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-341eecef",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=Alexa-Alarms-Off"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=Alexa-Alarms-Off"
+      }
+    },
+    "Presa TV Camera": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-cc694d54",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E120-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E120-0/perform/power_switch.off"
+      }
+    },
+    "Presa TV Salotto": {
+      "deviceType": "Outlet",
+      "uniqueId": "webhook-0f1a8faf",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E108-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E108-0/perform/power_switch.off"
+      }
+    },
+    "Giardino RGB": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-d2a45c46",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E86-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E86-2/perform/power_switch.off"
+      }
+    },
+    "Tavernetta Centrale": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-2c4df3bc",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E81-1/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E81-1/perform/power_switch.off"
+      }
+    },
+    "SCENA - Tende Sole - OS - DOWN": {
+      "deviceType": "Scene",
+      "uniqueId": "webhook-16971840",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=SunScreens-OpenSpace-Down"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:5011/scenes/reactor?v=SunScreens-OpenSpace-Down"
+      }
+    },
+    "Luce Cappa Cucina": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-551943fd",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_lucecappa/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_lucecappa/perform/power_switch.off"
+      }
+    },
+    "Tenda Vetrata destra": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-fef27716",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E7-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E7-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E7-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Tenda da Sole Ufficio": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-cb26dcc7",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E4-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E4-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E4-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Tapparella camera 2": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-cace0bbd",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E33-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E33-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E33-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    },
+    "Ingresso esterno": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-9dbc040e",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E143-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E143-0/perform/power_switch.off"
+      }
+    },
+    "condizionatore zona notte": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-384d2652",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_ac_notte/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/virtual%3Eswitchbot_ac_notte/perform/power_switch.off"
+      }
+    },
+    "Corridoio notte": {
+      "deviceType": "Switch",
+      "uniqueId": "webhook-a741e472",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E75-2/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E75-2/perform/power_switch.off"
+      }
+    },
+    "Tapparella camera 3": {
+      "deviceType": "CoverLift",
+      "uniqueId": "webhook-cace0bbe",
+      "on": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E34-0/perform/power_switch.on"
+      },
+      "off": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E34-0/perform/power_switch.off"
+      },
+      "brightness": {
+        "method": "GET",
+        "url": "http://192.168.1.26:8111/api/v1/entity/zwavejs%3E34-0/perform/position.set?value=${intensity.decimal_percent}"
+      }
+    }
+  }
+}

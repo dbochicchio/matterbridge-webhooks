@@ -379,7 +379,7 @@ Updated `matterbridge-webhooks.schema.json` to support both single and array end
 - **on** endpoint: Single command or array of commands
 - **off** endpoint: Single command or array of commands
 - **brightness** endpoint: Single command or array of commands
-- Other endpoints also updated (colorTemperature, colorHue, colorSaturation, colorXY, coverPosition, coverTilt, lock, unlock, etc.)
+- Other endpoints also updated (colorTemperature, colorHue, colorXY, coverPosition, coverTilt, lock, unlock, etc.)
 
 Uses JSON Schema `oneOf` pattern for schema validation.
 

@@ -19,6 +19,7 @@ Each device in your configuration tells the plugin:
 - **ColorLight** - Light you can change colors on
 - **Thermostat** - Temperature control
 - **Cover** - Blinds or shades
+- **CoverLiftTilt** - Blinds with both lift and tilt control
 
 ## Basic Setup
 
@@ -165,18 +166,26 @@ For **brightness** endpoint:
 - `${brightness}` - Brightness percentage (0-100)
 - `${level}` - Matter brightness level (0-254)
 
-For **color** endpoints:
+For **color** endpoints (colorHue automatically provides all color formats):
 
 - `${hue}` - Hue in degrees (0-360)
 - `${saturation}` - Saturation percentage (0-100)
+- `${color.r}`, `${color.g}`, `${color.b}` - RGB values (0-255)
+- `${color.rx}`, `${color.gx}`, `${color.bx}` - RGB hex values (00-FF)
+- `${color.rgbx}` - Combined RGB hex (RRGGBB)
+- `${color.h}` - Matter hue (0-254)
+- `${color.s}` - Matter saturation (0-254)
 - `${colorX}` - CIE X coordinate (0-1)
 - `${colorY}` - CIE Y coordinate (0-1)
 - `${colorTemperatureMireds}` - Color temperature in mireds
+- `${kelvin}` - Color temperature in Kelvin (auto-computed from mireds, clamped 1600-9000)
 
 For **cover** endpoints:
 
 - `{position}` - Cover position percentage (0-100)
 - `{tilt}` - Tilt angle percentage (0-100)
+
+Note: Cover position and tilt should use the same intensity placeholders used for brightness. For example, `${intensity.decimal_percent}` for 0.00–1.00 and `${intensity.percent}` for 0–100.
 
 ### ha-bridge Intensity Replacements
 
@@ -560,7 +569,7 @@ Instead of two separate actions, combine them:
           "method": "POST",
           "url": "http://192.168.1.120/blinds/move",
           "params": {
-            "position": "${level.percent}",
+            "position": "${intensity.percent}",
             "speed": "normal"
           }
         },
@@ -568,7 +577,7 @@ Instead of two separate actions, combine them:
           "method": "POST",
           "url": "http://192.168.1.120/blinds/confirm",
           "params": {
-            "target": "${level.percent}"
+            "target": "${intensity.percent}"
           }
         }
       ]

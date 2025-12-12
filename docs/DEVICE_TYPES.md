@@ -18,13 +18,16 @@ This document provides detailed information about all supported device types and
 ## Switches & Outlets
 
 ### Outlet
+
 Simple on/off outlet/plug device.
 
 **Endpoints:**
+
 - `on` - Turn outlet on
 - `off` - Turn outlet off
 
 **Example:**
+
 ```json
 {
   "Coffee Maker": {
@@ -42,13 +45,16 @@ Simple on/off outlet/plug device.
 ```
 
 ### Switch
+
 Generic on/off switch.
 
 **Endpoints:**
+
 - `on` - Turn switch on
 - `off` - Turn switch off
 
 **Example:**
+
 ```json
 {
   "Garden Light Switch": {
@@ -68,12 +74,15 @@ Generic on/off switch.
 ```
 
 ### Scene
+
 Momentary trigger that automatically turns off after activation (1 second).
 
 **Endpoints:**
+
 - `on` - Trigger the scene
 
 **Example:**
+
 ```json
 {
   "Good Night Scene": {
@@ -92,13 +101,16 @@ Momentary trigger that automatically turns off after activation (1 second).
 ## Lights
 
 ### Light
+
 Simple on/off light.
 
 **Endpoints:**
+
 - `on` - Turn light on
 - `off` - Turn light off
 
 **Example:**
+
 ```json
 {
   "Porch Light": {
@@ -116,18 +128,22 @@ Simple on/off light.
 ```
 
 ### DimmableLight
+
 Light with brightness control (0-100%).
 
 **Endpoints:**
+
 - `on` - Turn light on
 - `off` - Turn light off
 - `brightness` - Set brightness (0-100)
 
 **Variables:**
+
 - `${brightness}` - 0-100 percentage
 - `${level}` - 0-254 Matter level
 
 **Example:**
+
 ```json
 {
   "Living Room Dimmer": {
@@ -152,20 +168,24 @@ Light with brightness control (0-100%).
 ```
 
 ### ColorTemperatureLight
+
 Dimmable light with color temperature control (warm to cool white).
 
 **Endpoints:**
+
 - `on` - Turn light on
 - `off` - Turn light off
 - `brightness` - Set brightness (0-100)
 - `colorTemperature` - Set color temperature (mireds)
 
 **Variables:**
+
 - `${brightness}` - 0-100
 - `${level}` - 0-254
 - `${colorTemperatureMireds}` - Color temperature in mireds (153-500)
 
 **Example:**
+
 ```json
 {
   "Office CT Light": {
@@ -195,26 +215,34 @@ Dimmable light with color temperature control (warm to cool white).
 ```
 
 ### ExtendedColorLight
+
 Full-featured RGBW light with XY, HS color control and color temperature.
 
 **Endpoints:**
+
 - `on` - Turn light on
 - `off` - Turn light off
 - `brightness` - Set brightness
-- `colorHue` - Set hue (0-360°)
-- `colorSaturation` - Set saturation (0-100%)
+- `colorHue` - Set color (hue and saturation combined). Automatically converts to RGB. This is the recommended single endpoint for color control.
 - `colorXY` - Set color using XY coordinates
 - `colorTemperature` - Set color temperature
 
 **Variables:**
+
 - `${brightness}` - 0-100
 - `${hue}` - 0-360 degrees
 - `${saturation}` - 0-100%
+- `${color.r}`, `${color.g}`, `${color.b}` - RGB values 0-255
+- `${color.rx}`, `${color.gx}`, `${color.bx}` - RGB hex values (00-FF)
+- `${color.rgbx}` - Combined RGB hex (RRGGBB)
+- `${color.h}` - Hue (0-254 Matter format)
+- `${color.s}` - Saturation (0-254 Matter format)
 - `${colorX}` - 0-1
 - `${colorY}` - 0-1
 - `${colorTemperatureMireds}` - mireds
 
 **Example:**
+
 ```json
 {
   "RGB Strip": {
@@ -237,12 +265,7 @@ Full-featured RGBW light with XY, HS color control and color temperature.
     "colorHue": {
       "method": "PUT",
       "url": "http://192.168.1.113/api/light",
-      "params": { "hue": 0 }
-    },
-    "colorSaturation": {
-      "method": "PUT",
-      "url": "http://192.168.1.113/api/light",
-      "params": { "saturation": 0 }
+      "params": { "r": "${color.r}", "g": "${color.g}", "b": "${color.b}" }
     },
     "colorTemperature": {
       "method": "PUT",
@@ -254,15 +277,19 @@ Full-featured RGBW light with XY, HS color control and color temperature.
 ```
 
 ### ColorLightHS
+
 Color light with Hue/Saturation control (no XY).
 
 **Endpoints:**
+
 - Same as ExtendedColorLight but without `colorXY`
 
 ### ColorLightXY
+
 Color light with XY color control.
 
 **Endpoints:**
+
 - Same as ExtendedColorLight but focus on `colorXY`
 
 ---
@@ -272,12 +299,15 @@ Color light with XY color control.
 All sensors support polling for state updates via the `pollState` endpoint.
 
 ### ContactSensor
+
 Door/window contact sensor.
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "state": true,  // or "contact": true
@@ -286,6 +316,7 @@ Door/window contact sensor.
 ```
 
 **Example:**
+
 ```json
 {
   "Front Door": {
@@ -300,12 +331,15 @@ Door/window contact sensor.
 ```
 
 ### MotionSensor
+
 PIR motion sensor.
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "occupied": true,  // or "motion": true
@@ -314,6 +348,7 @@ PIR motion sensor.
 ```
 
 **Example:**
+
 ```json
 {
   "Hallway Motion": {
@@ -328,12 +363,15 @@ PIR motion sensor.
 ```
 
 ### IlluminanceSensor
+
 Light level sensor (lux).
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "illuminance": 450,  // or "lux": 450
@@ -342,6 +380,7 @@ Light level sensor (lux).
 ```
 
 **Example:**
+
 ```json
 {
   "Living Room Light Sensor": {
@@ -356,12 +395,15 @@ Light level sensor (lux).
 ```
 
 ### TemperatureSensor
+
 Temperature sensor (°C).
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "temperature": 22.5
@@ -370,6 +412,7 @@ Temperature sensor (°C).
 ```
 
 **Example:**
+
 ```json
 {
   "Outdoor Temp": {
@@ -384,12 +427,15 @@ Temperature sensor (°C).
 ```
 
 ### HumiditySensor
+
 Relative humidity sensor (%).
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "humidity": 65
@@ -398,6 +444,7 @@ Relative humidity sensor (%).
 ```
 
 **Example:**
+
 ```json
 {
   "Bathroom Humidity": {
@@ -412,12 +459,15 @@ Relative humidity sensor (%).
 ```
 
 ### PressureSensor
+
 Atmospheric pressure sensor (hPa).
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "pressure": 1013.25
@@ -426,6 +476,7 @@ Atmospheric pressure sensor (hPa).
 ```
 
 **Example:**
+
 ```json
 {
   "Weather Station": {
@@ -440,12 +491,15 @@ Atmospheric pressure sensor (hPa).
 ```
 
 ### ClimateSensor
+
 Combined temperature, humidity, and pressure sensor.
 
 **Endpoints:**
+
 - `pollState` - Poll sensor state
 
 **Expected Response:**
+
 ```json
 {
   "temperature": 22.5,
@@ -455,6 +509,7 @@ Combined temperature, humidity, and pressure sensor.
 ```
 
 **Example:**
+
 ```json
 {
   "Climate Monitor": {
@@ -473,15 +528,19 @@ Combined temperature, humidity, and pressure sensor.
 ## Covers
 
 ### CoverLift
+
 Window covering with lift/open-close control.
 
 **Endpoints:**
+
 - `coverPosition` - Set position (0-100, 0=open, 100=closed)
 
 **Variables:**
+
 - `{position}` - 0-100 percentage
 
 **Example:**
+
 ```json
 {
   "Living Room Blinds": {
@@ -496,17 +555,21 @@ Window covering with lift/open-close control.
 ```
 
 ### CoverLiftTilt
+
 Window covering with both lift and tilt control.
 
 **Endpoints:**
+
 - `coverPosition` - Set lift position (0-100)
 - `coverTilt` - Set tilt position (0-100)
 
 **Variables:**
+
 - `{position}` - 0-100
 - `{tilt}` - 0-100
 
 **Example:**
+
 ```json
 {
   "Bedroom Venetian Blinds": {
@@ -530,13 +593,16 @@ Window covering with both lift and tilt control.
 ## Locks
 
 ### DoorLock
+
 Smart door lock.
 
 **Endpoints:**
+
 - `lock` - Lock the door
 - `unlock` - Unlock the door
 
 **Example:**
+
 ```json
 {
   "Front Door Lock": {
@@ -560,18 +626,22 @@ Smart door lock.
 ## Thermostats
 
 ### ThermostatAuto
+
 Thermostat with auto mode (heating and cooling).
 
 **Endpoints:**
+
 - `setHeatingPoint` - Set heating setpoint temperature
 - `setCoolingPoint` - Set cooling setpoint temperature
 - `setMode` - Set thermostat mode
 
 **Variables:**
+
 - `${temperature}` - Temperature in °C
 - `{mode}` - Thermostat mode
 
 **Example:**
+
 ```json
 {
   "Living Room Thermostat": {
@@ -596,12 +666,15 @@ Thermostat with auto mode (heating and cooling).
 ```
 
 ### ThermostatHeat
+
 Heating-only thermostat.
 
 **Endpoints:**
+
 - `setHeatingPoint` - Set heating setpoint
 
 **Example:**
+
 ```json
 {
   "Bedroom Heater": {
@@ -616,12 +689,15 @@ Heating-only thermostat.
 ```
 
 ### ThermostatCool
+
 Cooling-only thermostat (air conditioner).
 
 **Endpoints:**
+
 - `setCoolingPoint` - Set cooling setpoint
 
 **Example:**
+
 ```json
 {
   "Bedroom AC": {
@@ -640,18 +716,23 @@ Cooling-only thermostat (air conditioner).
 ## Mode Select
 
 ### ModeSelect
+
 Device with multiple selectable modes.
 
 **Endpoints:**
+
 - `setModeValue` - Set the current mode
 
 **Configuration:**
+
 - `modes` - Array of available modes
 
 **Variables:**
+
 - `{mode}` - Mode number
 
 **Example:**
+
 ```json
 {
   "Fan Speed": {
@@ -678,13 +759,16 @@ Device with multiple selectable modes.
 These are physical switches mounted on walls that control other devices.
 
 ### OnOffMountedSwitch
+
 Wall-mounted on/off switch.
 
 **Endpoints:**
+
 - `on` - Switch on
 - `off` - Switch off
 
 **Example:**
+
 ```json
 {
   "Wall Switch 1": {
@@ -704,14 +788,17 @@ Wall-mounted on/off switch.
 ```
 
 ### DimmerMountedSwitch
+
 Wall-mounted dimmer switch.
 
 **Endpoints:**
+
 - `on` - Switch on
 - `off` - Switch off
 - `brightness` - Set brightness level
 
 **Example:**
+
 ```json
 {
   "Wall Dimmer 1": {
@@ -740,21 +827,26 @@ Wall-mounted dimmer switch.
 ## General Notes
 
 ### Polling Intervals
+
 - Default: 60 seconds
 - Minimum recommended: 10 seconds
 - Maximum recommended: 300 seconds (5 minutes)
 - Set via `pollInterval` (in seconds)
 
 ### Parameter Substitution
+
 All endpoints support parameter substitution using `{variableName}` syntax in URLs and params.
 
 ### HTTP Methods
+
 - **GET**: Best for simple URL-based APIs, parameters become query strings
 - **POST**: Parameters sent as JSON in request body
 - **PUT**: Similar to POST, use based on API requirements
 
 ### Error Handling
+
 All HTTP requests have a 5-second timeout. Failed requests are logged but don't prevent the device from functioning.
 
 ### Testing
+
 Use the `test: true` configuration option and the "Test" button in the Matterbridge UI to verify endpoints before deployment.

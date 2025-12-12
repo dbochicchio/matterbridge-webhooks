@@ -8,6 +8,7 @@ dist/
 jest/
 node_modules/
 temp/
+.temp/
 
 # Specific files that should be ignored
 *.backup

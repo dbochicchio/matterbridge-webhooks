@@ -44,6 +44,7 @@ import {
   onOffMountedSwitch,
   dimmableMountedSwitch,
   powerSource,
+  roboticVacuumCleaner,
   PlatformConfig,
   PlatformMatterbridge,
 } from 'matterbridge';
@@ -108,7 +109,9 @@ export interface WebhookConfig {
     | 'ModeSelect'
     // Mounted Switches
     | 'OnOffMountedSwitch'
-    | 'DimmerMountedSwitch';
+    | 'DimmerMountedSwitch'
+    // Robot Vacuum
+    | 'VacuumRobot';
 
   // Action endpoints
   on?: HttpEndpoint;
@@ -135,6 +138,13 @@ export interface WebhookConfig {
   // Mode Select endpoints
   setModeValue?: HttpEndpoint; // For mode select (mode value)
 
+  // Robot Vacuum endpoints
+  vacuumStart?: HttpEndpoint; // Start cleaning
+  vacuumStop?: HttpEndpoint; // Stop cleaning
+  vacuumPause?: HttpEndpoint; // Pause cleaning
+  vacuumResume?: HttpEndpoint; // Resume cleaning
+  vacuumDock?: HttpEndpoint; // Return to dock
+
   // Sensor polling
   pollState?: HttpEndpoint; // For sensors - polls current state
   pollInterval?: number; // Poll interval in seconds (default: 60)
@@ -145,6 +155,9 @@ export interface WebhookConfig {
 
   // Mode select configuration
   modes?: Array<{ label: string; mode: number }>; // For mode select devices
+
+  // Device identification
+  uniqueId?: string; // Optional unique identifier for the device (if not specified, will be generated from device name)
 
   test?: boolean;
 
@@ -216,13 +229,15 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
 
       this.log.debug(`Loading webhook ${++i} ${webhookName} type: ${webhook.deviceType}`);
 
-      this.setSelectDevice('webhook' + i, webhookName, undefined, 'hub');
-      if (!this.validateDevice(['webhook' + i, webhookName], true)) continue;
+      // Use explicitly set uniqueId from config, or generate from name hash
+      const deviceId = webhook.uniqueId || this.generateUniqueId(webhookName);
+      
+      this.setSelectDevice(deviceId, webhookName, undefined, 'hub');
+      if (!this.validateDevice([deviceId, webhookName], true)) continue;
 
-      this.log.info(`Registering device: ${webhookName} as ${webhook.deviceType}`);
+      this.log.info(`Registering device: ${webhookName} as ${webhook.deviceType} (ID: ${deviceId})`);
 
       // Determine device type and create appropriate device
-      const deviceId = 'webhook' + i;
       let device: MatterbridgeEndpoint;
 
       switch (webhook.deviceType) {
@@ -317,6 +332,11 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
           device = this.createDimmerMountedSwitchDevice(webhookName, deviceId, webhook);
           break;
 
+        // Robot Vacuum
+        case 'VacuumRobot':
+          device = this.createRobotVacuumDevice(webhookName, deviceId, webhook);
+          break;
+
         default:
           this.log.error(`Unknown device type: ${webhook.deviceType}`);
           continue;
@@ -334,9 +354,21 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
 
   // ========== DEVICE CREATION METHODS ==========
 
+  // Generate a consistent unique ID from a string (using simple hash)
+  private generateUniqueId(name: string): string {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      const char = name.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    // Convert to positive hex string
+    return 'webhook-' + (hash >>> 0).toString(16).padStart(8, '0');
+  }
+
   // Helper method for common device setup
   private createBaseDevice(name: string, id: string, deviceTypes: any[], webhook: WebhookConfig): MatterbridgeEndpoint {
-    return new MatterbridgeEndpoint(deviceTypes as any, { id: name }, this.config.debug as boolean).createDefaultBridgedDeviceBasicInformationClusterServer(
+    return new MatterbridgeEndpoint(deviceTypes as any, { id: id }, this.config.debug as boolean).createDefaultBridgedDeviceBasicInformationClusterServer(
       name,
       id,
       this.matterbridge.aggregatorVendorId,
@@ -400,7 +432,8 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       .createDefaultIdentifyClusterServer()
       .createDefaultGroupsClusterServer()
       .createDefaultOnOffClusterServer(false)
-      .createDefaultLevelControlClusterServer(0)
+      // Initialize level > 0 to satisfy Matter spec
+      .createDefaultLevelControlClusterServer(254)
       .createDefaultPowerSourceWiredClusterServer();
 
     this.addOnOffHandlers(device, name, webhook);
@@ -413,7 +446,8 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       .createDefaultIdentifyClusterServer()
       .createDefaultGroupsClusterServer()
       .createDefaultOnOffClusterServer(false)
-      .createDefaultLevelControlClusterServer(0)
+      // Initialize level > 0 to satisfy Matter spec
+      .createDefaultLevelControlClusterServer(254)
       .createDefaultColorControlClusterServer()
       .createDefaultPowerSourceWiredClusterServer();
 
@@ -428,7 +462,8 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       .createDefaultIdentifyClusterServer()
       .createDefaultGroupsClusterServer()
       .createDefaultOnOffClusterServer(false)
-      .createDefaultLevelControlClusterServer(0)
+      // Initialize level > 0 to satisfy Matter spec
+      .createDefaultLevelControlClusterServer(254)
       .createDefaultColorControlClusterServer()
       .createDefaultPowerSourceWiredClusterServer();
 
@@ -445,7 +480,8 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       .createDefaultIdentifyClusterServer()
       .createDefaultGroupsClusterServer()
       .createDefaultOnOffClusterServer(false)
-      .createDefaultLevelControlClusterServer(0)
+      // Initialize level > 0 to satisfy Matter spec
+      .createDefaultLevelControlClusterServer(254)
       .createDefaultColorControlClusterServer()
       .createDefaultPowerSourceWiredClusterServer();
 
@@ -462,7 +498,8 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       .createDefaultIdentifyClusterServer()
       .createDefaultGroupsClusterServer()
       .createDefaultOnOffClusterServer(false)
-      .createDefaultLevelControlClusterServer(0)
+      // Initialize level > 0 to satisfy Matter spec
+      .createDefaultLevelControlClusterServer(254)
       .createDefaultColorControlClusterServer()
       .createDefaultPowerSourceWiredClusterServer();
 
@@ -665,6 +702,18 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
     return device;
   }
 
+  // ===== ROBOT VACUUM =====
+
+  private createRobotVacuumDevice(name: string, id: string, webhook: WebhookConfig): MatterbridgeEndpoint {
+    const device = this.createBaseDevice(name, id, [roboticVacuumCleaner, bridgedNode], webhook)
+      .createDefaultIdentifyClusterServer()
+      .createDefaultOperationalStateClusterServer()
+      .addRequiredClusterServers();
+
+    this.addVacuumHandlers(device, name, webhook);
+    return device;
+  }
+
   // ========== COMMAND HANDLER METHODS ==========
 
   private addOnOffHandlers(device: MatterbridgeEndpoint, name: string, webhook: WebhookConfig): void {
@@ -729,18 +778,41 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
 
     device.addCommandHandler('moveToColorTemperature', async ({ request }: any) => {
       const mireds = request.colorTemperatureMireds;
+      const kelvinRaw = Math.round(1000000 / Math.max(1, mireds));
+      const kelvin = Math.max(1600, Math.min(9000, kelvinRaw));
       const level = device.getAttribute('levelControl', 'currentLevel') || 254;
       const hue = device.getAttribute('colorControl', 'currentHue') ? Math.round((device.getAttribute('colorControl', 'currentHue') / 254) * 360) : 0;
       const saturation = device.getAttribute('colorControl', 'currentSaturation') ? Math.round((device.getAttribute('colorControl', 'currentSaturation') / 254) * 100) : 0;
-      this.log.info(`${name}: Setting color temperature to ${mireds} mireds`);
+      this.log.info(`${name}: Setting color temperature to ${mireds} mireds (~${kelvin}K)`);
 
-      const params = { ...this.getFirstCommand(webhook.colorTemperature!).params, colorTemperatureMireds: mireds };
+      const params = {
+        ...this.getFirstCommand(webhook.colorTemperature!).params,
+        colorTemperatureMireds: mireds,
+        colorTemperatureKelvin: kelvin,
+        kelvin,
+        value: kelvin,
+      };
       await this.executeHttpRequest(name, webhook.colorTemperature!, params, level, hue, saturation, Math.round((level / 254) * 100));
       await device.setAttribute('colorControl', 'colorTemperatureMireds', mireds, device.log);
     });
   }
 
   private addColorHandlers(device: MatterbridgeEndpoint, name: string, webhook: WebhookConfig): void {
+    // Handle combined hue and saturation command (most common from controllers)
+    if (webhook.colorHue) {
+      device.addCommandHandler('moveToHueAndSaturation', async ({ request }: any) => {
+        const hue = Math.round((request.hue / 254) * 360);
+        const saturation = Math.round((request.saturation / 254) * 100);
+        const level = device.getAttribute('levelControl', 'currentLevel') || 254;
+        this.log.info(`${name}: Setting hue to ${hue}° and saturation to ${saturation}%`);
+
+        const params = { ...this.getFirstCommand(webhook.colorHue!).params, hue, saturation };
+        await this.executeHttpRequest(name, webhook.colorHue!, params, level, hue, saturation, Math.round((level / 254) * 100));
+        await device.setAttribute('colorControl', 'currentHue', request.hue, device.log);
+        await device.setAttribute('colorControl', 'currentSaturation', request.saturation, device.log);
+      });
+    }
+
     if (webhook.colorHue) {
       device.addCommandHandler('moveToHue', async ({ request }: any) => {
         const hue = Math.round((request.hue / 254) * 360);
@@ -792,6 +864,11 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
         this.log.info(`${name}: Opening cover`);
         const params = { ...this.getFirstCommand(webhook.coverPosition).params, position: 0 };
         await this.executeHttpRequest(name, webhook.coverPosition, params, 0);
+      } else if (webhook.brightness) {
+        this.log.info(`${name}: Opening cover (brightness fallback)`);
+        const params = { ...this.getFirstCommand(webhook.brightness).params };
+        // Send level=0 so ${intensity.*} placeholders resolve to 0/0.0/0%
+        await this.executeHttpRequest(name, webhook.brightness, params, 0);
       }
       await device.setWindowCoveringCurrentTargetStatus(0, 0, WindowCoveringMovementStatus.Stopped);
     });
@@ -801,6 +878,11 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
         this.log.info(`${name}: Closing cover`);
         const params = { ...this.getFirstCommand(webhook.coverPosition).params, position: 100 };
         await this.executeHttpRequest(name, webhook.coverPosition, params, 254);
+      } else if (webhook.brightness) {
+        this.log.info(`${name}: Closing cover (brightness fallback)`);
+        const params = { ...this.getFirstCommand(webhook.brightness).params };
+        // Send level=254 so ${intensity.*} placeholders resolve to 1/100%
+        await this.executeHttpRequest(name, webhook.brightness, params, 254);
       }
       await device.setWindowCoveringCurrentTargetStatus(10000, 10000, WindowCoveringMovementStatus.Stopped);
     });
@@ -810,15 +892,20 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       await device.setWindowCoveringTargetAsCurrentAndStopped();
     });
 
-    if (webhook.coverPosition) {
+    if (webhook.coverPosition || webhook.brightness) {
       device.addCommandHandler('goToLiftPercentage', async ({ request }: any) => {
         const percent100ths = request.liftPercent100thsValue;
         const percent = Math.round(percent100ths / 100);
         const level = Math.round((percent / 100) * 254);
         this.log.info(`${name}: Moving to position ${percent}%`);
 
-        const params = { ...this.getFirstCommand(webhook.coverPosition!).params, position: percent };
-        await this.executeHttpRequest(name, webhook.coverPosition!, params, level);
+        if (webhook.coverPosition) {
+          const params = { ...this.getFirstCommand(webhook.coverPosition!).params, position: percent };
+          await this.executeHttpRequest(name, webhook.coverPosition!, params, level);
+        } else if (webhook.brightness) {
+          const params = { ...this.getFirstCommand(webhook.brightness).params };
+          await this.executeHttpRequest(name, webhook.brightness, params, level);
+        }
         await device.setWindowCoveringCurrentTargetStatus(percent100ths, percent100ths, WindowCoveringMovementStatus.Stopped);
       });
     }
@@ -905,6 +992,53 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       const params = { ...this.getFirstCommand(webhook.setModeValue!).params, mode: newMode };
       await this.executeHttpRequest(name, webhook.setModeValue!, params);
     });
+  }
+
+  private addVacuumHandlers(device: MatterbridgeEndpoint, name: string, webhook: WebhookConfig): void {
+    if (webhook.vacuumStart || webhook.on) {
+      device.addCommandHandler('start', async () => {
+        const endpoint = webhook.vacuumStart || webhook.on;
+        if (endpoint) {
+          this.log.info(`${name}: Starting vacuum cleaning`);
+          const params = this.getFirstCommand(endpoint).params || {};
+          await this.executeHttpRequest(name, endpoint, params);
+          await device.setAttribute('operationalState', 'operationalState', 0x01, device.log); // Running
+        }
+      });
+    }
+
+    if (webhook.vacuumStop || webhook.off) {
+      device.addCommandHandler('stop', async () => {
+        const endpoint = webhook.vacuumStop || webhook.off;
+        if (endpoint) {
+          this.log.info(`${name}: Stopping vacuum`);
+          const params = this.getFirstCommand(endpoint).params || {};
+          await this.executeHttpRequest(name, endpoint, params);
+          await device.setAttribute('operationalState', 'operationalState', 0x00, device.log); // Stopped
+        }
+      });
+    }
+
+    if (webhook.vacuumPause) {
+      device.addCommandHandler('pause', async () => {
+        this.log.info(`${name}: Pausing vacuum`);
+        const params = this.getFirstCommand(webhook.vacuumPause!).params || {};
+        await this.executeHttpRequest(name, webhook.vacuumPause!, params);
+        await device.setAttribute('operationalState', 'operationalState', 0x02, device.log); // Paused
+      });
+    }
+
+    if (webhook.vacuumResume || webhook.vacuumStart) {
+      device.addCommandHandler('resume', async () => {
+        const endpoint = webhook.vacuumResume || webhook.vacuumStart;
+        if (endpoint) {
+          this.log.info(`${name}: Resuming vacuum`);
+          const params = this.getFirstCommand(endpoint).params || {};
+          await this.executeHttpRequest(name, endpoint, params);
+          await device.setAttribute('operationalState', 'operationalState', 0x01, device.log); // Running
+        }
+      });
+    }
   }
 
   // ========== SENSOR POLLING ==========
@@ -1218,6 +1352,15 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
     return result;
   }
 
+  private substituteParamPlaceholders(text: string, params: Record<string, string | number | boolean>): string {
+    let result = text;
+    for (const [key, value] of Object.entries(params || {})) {
+      const re = new RegExp(`\\$\\{${key}\\}`, 'g');
+      result = result.replace(re, String(value));
+    }
+    return result;
+  }
+
   private getFirstCommand(endpoint: HttpEndpoint): HttpCommand {
     return Array.isArray(endpoint) ? endpoint[0] : endpoint;
   }
@@ -1276,6 +1419,9 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       url = this.substituteHaBridgeColor(url, hue ?? -1, saturation ?? -1, brightness ?? -1);
     }
 
+    // Replace any ${param} placeholders (e.g., ${kelvin}) in URL using provided params
+    url = this.substituteParamPlaceholders(url, params);
+
     // Check if params should be in URL or body
     if (command.method === 'GET') {
       // For GET, add all params to URL
@@ -1308,6 +1454,13 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
       }
     }
 
+    // Replace any ${param} placeholders inside parameter string values as well
+    for (const [key, value] of Object.entries(urlParams)) {
+      if (typeof value === 'string') {
+        urlParams[key] = this.substituteParamPlaceholders(value, params);
+      }
+    }
+
     // Store current level for next call
     if (level !== undefined) {
       this.deviceLevel.set(deviceName, level);
@@ -1315,6 +1468,13 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
 
     // Use device-specific timeout if configured, otherwise use platform default
     const deviceTimeout = webhook.timeout ?? this.defaultTimeout;
+    
+    // Log the HTTP request details
+    this.log.info(`${deviceName}: Executing HTTP request: ${command.method} ${url}`);
+    if (Object.keys(urlParams).length > 0) {
+      this.log.debug(`${deviceName}: Request params: ${JSON.stringify(urlParams)}`);
+    }
+    
     await fetch(url, command.method, urlParams, deviceTimeout);
     this.log.notice(`${deviceName}: HTTP request successful`);
   }
@@ -1324,7 +1484,11 @@ export class WebhooksPlatform extends MatterbridgeDynamicPlatform {
     this.log.info('onConfigure called');
     this.bridgedDevices.forEach(async (device) => {
       this.log.info(`Configuring device: ${device.deviceName}`);
-      await device.setAttribute('onOff', 'onOff', false, device.log);
+      try {
+        await device.setAttribute('onOff', 'onOff', false, device.log);
+      } catch (error) {
+        // Ignore error for devices without OnOff cluster (e.g., window coverings)
+      }
     });
   }
 

@@ -65,8 +65,12 @@
           "deviceType": {
             "type": "string",
             "default": "Outlet",
-            "enum": ["Outlet", "Switch", "Light", "DimmableLight", "Scene"],
-            "description": "Select the device type: Outlet, Switch, Light (on/off), DimmableLight (with brightness), or Scene (momentary trigger)"
+            "enum": ["Outlet", "Switch", "Light", "DimmableLight", "Scene", "VacuumRobot"],
+            "description": "Select the device type: Outlet, Switch, Light (on/off), DimmableLight (with brightness), Scene, or VacuumRobot"
+          },
+          "uniqueId": {
+            "type": "string",
+            "description": "Optional: Unique identifier for this device. If not specified, will be automatically generated from the device name. Use this to maintain a stable device identity across configuration changes."
           },
           "on": {
             "title": "ON Action Endpoint(s)",
@@ -241,6 +245,232 @@
                 }
               }
             ]
+          },
+          "colorTemperature": {
+            "title": "Color Temperature Endpoint(s)",
+            "description": "HTTP endpoint or array of endpoints to call when changing color temperature (ColorTemperatureLight/ExtendedColorLight). Color temperature in mireds is provided as ${colorTemperatureMireds}. Use an array for sequential commands.",
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Single Command",
+                "required": ["method", "url"],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "default": "GET",
+                    "enum": ["GET", "POST", "PUT"],
+                    "description": "HTTP method (GET, POST, or PUT)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL to call. Use ${colorTemperatureMireds} placeholder (e.g., http://device/ct?mireds=${colorTemperatureMireds})"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Additional parameters to send. 'colorTemperatureMireds' is automatically added",
+                    "additionalProperties": {
+                      "type": ["string", "number", "boolean"]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "title": "Multiple Commands (Sequential)",
+                "description": "Array of commands to execute sequentially when color temperature changes",
+                "items": {
+                  "type": "object",
+                  "required": ["method", "url"],
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "default": "GET",
+                      "enum": ["GET", "POST", "PUT"],
+                      "description": "HTTP method (GET, POST, or PUT)"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL to call. Supports all placeholder substitutions including ${colorTemperatureMireds}"
+                    },
+                    "params": {
+                      "type": "object",
+                      "description": "Additional parameters to send",
+                      "additionalProperties": {
+                        "type": ["string", "number", "boolean"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "colorHue": {
+            "title": "Color (Hue/Saturation) Endpoint(s)",
+            "description": "HTTP endpoint or array of endpoints to call when changing color via hue/saturation (ExtendedColorLight/ColorLightHS). The handler automatically provides RGB placeholders from HS. Use an array for sequential commands.",
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Single Command",
+                "required": ["method", "url"],
+                "properties": {
+                  "method": {
+                    "type": "string",
+                    "default": "GET",
+                    "enum": ["GET", "POST", "PUT"],
+                    "description": "HTTP method (GET, POST, or PUT)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "URL to call. You can use ${hue}, ${saturation}, and RGB placeholders like ${color.r}, ${color.g}, ${color.b}"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Additional parameters to send. 'hue' and 'saturation' are automatically added in human-friendly ranges (hue 0-360, saturation 0-100)",
+                    "additionalProperties": {
+                      "type": ["string", "number", "boolean"]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "array",
+                "title": "Multiple Commands (Sequential)",
+                "description": "Array of commands to execute sequentially when color changes",
+                "items": {
+                  "type": "object",
+                  "required": ["method", "url"],
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "default": "GET",
+                      "enum": ["GET", "POST", "PUT"],
+                      "description": "HTTP method (GET, POST, or PUT)"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL to call. Supports all placeholder substitutions including ${hue}, ${saturation}, ${color.r}, ${color.g}, ${color.b}, ${color.rgbx}"
+                    },
+                    "params": {
+                      "type": "object",
+                      "description": "Additional parameters to send",
+                      "additionalProperties": {
+                        "type": ["string", "number", "boolean"]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "vacuumStart": {
+            "title": "Vacuum Start Endpoint",
+            "description": "HTTP endpoint to call when starting vacuum cleaning (RobotVacuum only). Falls back to 'on' endpoint if not specified.",
+            "type": "object",
+            "required": ["method", "url"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "GET",
+                "enum": ["GET", "POST", "PUT"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "number", "boolean"]
+                }
+              }
+            }
+          },
+          "vacuumStop": {
+            "title": "Vacuum Stop Endpoint",
+            "description": "HTTP endpoint to call when stopping vacuum (RobotVacuum only). Falls back to 'off' endpoint if not specified.",
+            "type": "object",
+            "required": ["method", "url"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "GET",
+                "enum": ["GET", "POST", "PUT"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "number", "boolean"]
+                }
+              }
+            }
+          },
+          "vacuumPause": {
+            "title": "Vacuum Pause Endpoint",
+            "description": "HTTP endpoint to call when pausing vacuum cleaning (RobotVacuum only).",
+            "type": "object",
+            "required": ["method", "url"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "GET",
+                "enum": ["GET", "POST", "PUT"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "number", "boolean"]
+                }
+              }
+            }
+          },
+          "vacuumResume": {
+            "title": "Vacuum Resume Endpoint",
+            "description": "HTTP endpoint to call when resuming vacuum cleaning (RobotVacuum only). Falls back to 'vacuumStart' endpoint if not specified.",
+            "type": "object",
+            "required": ["method", "url"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "GET",
+                "enum": ["GET", "POST", "PUT"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "number", "boolean"]
+                }
+              }
+            }
+          },
+          "vacuumDock": {
+            "title": "Vacuum Dock Endpoint",
+            "description": "HTTP endpoint to call when returning vacuum to dock (RobotVacuum only).",
+            "type": "object",
+            "required": ["method", "url"],
+            "properties": {
+              "method": {
+                "type": "string",
+                "default": "GET",
+                "enum": ["GET", "POST", "PUT"]
+              },
+              "url": {
+                "type": "string"
+              },
+              "params": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "number", "boolean"]
+                }
+              }
+            }
           },
           "test": {
             "type": "boolean",
